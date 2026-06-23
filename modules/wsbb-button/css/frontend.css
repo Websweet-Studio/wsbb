@@ -1,0 +1,12 @@
+/* WSBB Button Module - Global Styles */
+.wsbb-button-link {
+    display: inline-block;
+    text-decoration: none;
+    line-height: 1.4;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.wsbb-button-link:hover {
+    text-decoration: none;
+}

@@ -1,0 +1,7 @@
+/* WSBB Visual Editor Module - Global Styles */
+.wsbb-editor-inner {
+    word-wrap: break-word;
+}
+.wsbb-editor-inner > *:last-child {
+    margin-bottom: 0;
+}

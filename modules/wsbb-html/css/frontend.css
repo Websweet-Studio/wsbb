@@ -1,0 +1,5 @@
+/* WSBB HTML Module - Global Styles */
+.wsbb-html-inner {
+    position: relative;
+    word-wrap: break-word;
+}

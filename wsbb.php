@@ -30,8 +30,12 @@ define('WSBB_MODULES_URL', plugins_url('/modules/', __FILE__));
 function wsbb_load_modules()
 {
   if (class_exists('FLBuilder')) {
+    require_once WSBB_MODULES_DIR . 'wsbb-button/wsbb-button.php';
     require_once WSBB_MODULES_DIR . 'wsbb-gallery/wsbb-gallery.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-heading/wsbb-heading.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-html/wsbb-html.php';
     require_once WSBB_MODULES_DIR . 'wsbb-post/wsbb-post.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-visual-editor/wsbb-visual-editor.php';
   }
 }
 add_action('init', 'wsbb_load_modules');

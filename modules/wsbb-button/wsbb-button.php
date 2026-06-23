@@ -1,0 +1,162 @@
+<?php
+
+class Wsbb_Button extends FLBuilderModule
+{
+    public function __construct()
+    {
+        parent::__construct(array(
+            'name'            => __('WSBB Button', 'wsbb'),
+            'description'     => __('Customizable call-to-action button.', 'wsbb'),
+            'group'           => __('WSBB Modules', 'wsbb'),
+            'category'        => __('Layout', 'wsbb'),
+            'dir'             => WSBB_MODULES_DIR . 'wsbb-button/',
+            'url'             => WSBB_MODULES_URL . 'wsbb-button/',
+            'icon'            => 'button.svg',
+            'editor_export'   => true,
+            'enabled'         => true,
+            'partial_refresh' => false,
+            'include_wrapper' => false,
+        ));
+    }
+
+    public function enqueue_scripts()
+    {
+        $this->add_css('wsbb-button', $this->url . 'css/frontend.css', array(), WSBB_VERSION);
+    }
+}
+
+// Register the module
+FLBuilder::register_module('Wsbb_Button', array(
+    'general' => array(
+        'title'    => __('General', 'wsbb'),
+        'sections' => array(
+            'content' => array(
+                'title'  => __('Content', 'wsbb'),
+                'fields' => array(
+                    'button_text' => array(
+                        'type'    => 'text',
+                        'label'   => __('Button Text', 'wsbb'),
+                        'default' => 'Click Here',
+                        'preview' => array(
+                            'type'     => 'text',
+                            'selector' => '.wsbb-button-text',
+                        ),
+                    ),
+                    'button_link' => array(
+                        'type'          => 'link',
+                        'label'         => __('Link', 'wsbb'),
+                        'placeholder'   => 'http://www.example.com',
+                        'show_target'   => true,
+                        'show_nofollow' => true,
+                    ),
+                ),
+            ),
+            'style' => array(
+                'title'  => __('Style', 'wsbb'),
+                'fields' => array(
+                    'align' => array(
+                        'type'    => 'align',
+                        'label'   => __('Alignment', 'wsbb'),
+                        'default' => 'left',
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-wrap',
+                            'property' => 'text-align',
+                        ),
+                    ),
+                    'text_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Text Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'default'    => 'ffffff',
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'color',
+                        ),
+                    ),
+                    'bg_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Background Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'default'    => '0073e6',
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'background-color',
+                        ),
+                    ),
+                    'bg_hover_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Hover Background Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'default'    => '005bb5',
+                    ),
+                    'border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Radius', 'wsbb'),
+                        'default'     => '4',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'border-radius',
+                        ),
+                    ),
+                    'padding_h' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Horizontal Padding', 'wsbb'),
+                        'default'     => '24',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'padding-left',
+                        ),
+                    ),
+                    'padding_v' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Vertical Padding', 'wsbb'),
+                        'default'     => '12',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'padding-top',
+                        ),
+                    ),
+                    'font_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Font Size', 'wsbb'),
+                        'default'     => '16',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'font-size',
+                        ),
+                    ),
+                    'font_weight' => array(
+                        'type'    => 'select',
+                        'label'   => __('Font Weight', 'wsbb'),
+                        'default' => '600',
+                        'options' => array(
+                            '400' => '400',
+                            '500' => '500',
+                            '600' => '600',
+                            '700' => '700',
+                        ),
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'font-weight',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+));
