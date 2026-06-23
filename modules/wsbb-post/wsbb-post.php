@@ -276,14 +276,14 @@ FLBuilder::register_module('Wsbb_Post', array(
                                 'sections' => array('style', 'elements'),
                             ),
                             'custom' => array(
-                                'sections' => array('custom_layout_section'),
+                                'sections' => array('custom_html', 'custom_css', 'shortcode_ref'),
                             ),
                         ),
                     ),
                 ),
             ),
-            'custom_layout_section' => array(
-                'title'  => __('Custom HTML Layout', 'wsbb'),
+            'custom_html' => array(
+                'title'  => __('HTML', 'wsbb'),
                 'fields' => array(
                     'custom_layout' => array(
                         'type'    => 'code',
@@ -311,9 +311,14 @@ FLBuilder::register_module('Wsbb_Post', array(
 </p>
 </div>',
                         'rows' => '20',
-                        'help'    => __('HTML for inner content of each post card. Use [wsbb] shortcodes. See reference below.', 'wsbb'),
+                        'help'    => __('HTML for inner content of each post card. Use [wsbb] shortcodes.', 'wsbb'),
                     ),
-                    'custom_css' => array(
+                ),
+            ),
+            'custom_css' => array(
+                'title'  => __('CSS', 'wsbb'),
+                'fields' => array(
+                    'custom_css_field' => array(
                         'type'    => 'code',
                         'editor'  => 'css',
                         'label'   => __('Post Card CSS', 'wsbb'),
@@ -410,9 +415,14 @@ FLBuilder::register_module('Wsbb_Post', array(
 .wsbb-post-content > *:last-child {
   margin-bottom: 0;
 }',
-                        'rows'    => '12',
+                        'rows' => '18',
                         'help'    => __('Custom CSS for styling your post card elements. Use class names from your HTML above.', 'wsbb'),
                     ),
+                ),
+            ),
+            'shortcode_ref' => array(
+                'title'  => __('Shortcodes', 'wsbb'),
+                'fields' => array(
                     'shortcode_reference' => array(
                         'type'    => 'raw',
                         'label'   => __('Available Shortcodes', 'wsbb'),
