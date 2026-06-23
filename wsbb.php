@@ -36,6 +36,7 @@ function wsbb_load_modules()
     require_once WSBB_MODULES_DIR . 'wsbb-heading/wsbb-heading.php';
     require_once WSBB_MODULES_DIR . 'wsbb-html/wsbb-html.php';
     require_once WSBB_MODULES_DIR . 'wsbb-post/wsbb-post.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-testimoni/wsbb-testimoni.php';
     require_once WSBB_MODULES_DIR . 'wsbb-visual-editor/wsbb-visual-editor.php';
   }
 }
