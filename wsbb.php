@@ -31,6 +31,7 @@ function wsbb_load_modules()
 {
   if (class_exists('FLBuilder')) {
     require_once WSBB_MODULES_DIR . 'wsbb-gallery/wsbb-gallery.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-post/wsbb-post.php';
   }
 }
 add_action('init', 'wsbb_load_modules');
