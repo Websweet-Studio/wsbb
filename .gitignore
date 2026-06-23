@@ -23,6 +23,7 @@
 *~
 ._*
 # but track
+!.github
 !.gitignore
 
 # OS or Editor files and folders
