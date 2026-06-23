@@ -35,8 +35,11 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
 
 /* ===== Carousel Layout ===== */
 <?php if ($layout_type === 'carousel'): ?>
+  .fl-node-<?php echo $id; ?> .wsbb-testimoni-carousel-track {
+    gap: <?php echo intval($settings->carousel_gap); ?>px;
+  }
   .fl-node-<?php echo $id; ?> .wsbb-testimoni-item {
-  flex: 0 0 calc((100% - (<?php echo intval($settings->carousel_slides); ?> - 1) * <?php echo intval($settings->carousel_gap); ?>px) / <?php echo intval($settings->carousel_slides); ?>);
+    flex: 0 0 calc((100% - (<?php echo intval($settings->carousel_slides); ?> - 1) * <?php echo intval($settings->carousel_gap); ?>px) / <?php echo intval($settings->carousel_slides); ?>);
   }
 <?php endif; ?>
 

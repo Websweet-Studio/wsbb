@@ -1,0 +1,146 @@
+/* ===== Image Item ===== */
+.wsbb-ic-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.35s ease;
+}
+
+.wsbb-ic-item:hover .wsbb-ic-img {
+  transform: scale(1.03);
+}
+
+.wsbb-ic-item {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* ===== Grid Layout ===== */
+.wsbb-ic-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--wsbb-cols, 4), 1fr);
+  grid-template-rows: repeat(var(--wsbb-rows, 1), 1fr);
+  gap: var(--wsbb-gap, 20px);
+}
+
+/* ===== List Layout ===== */
+.wsbb-ic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wsbb-gap, 20px);
+}
+
+/* ===== Carousel Wrapper ===== */
+.wsbb-ic-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.wsbb-ic-track {
+  display: flex;
+}
+
+/* ===== Carousel Mode ===== */
+.wsbb-ic-mode-carousel .wsbb-ic-track {
+  display: flex;
+  transition: transform 0.4s ease;
+  gap: var(--wsbb-carousel-gap, 20px);
+}
+
+.wsbb-ic-mode-carousel .wsbb-ic-slide {
+  box-sizing: border-box;
+}
+
+/* ===== Marquee Mode ===== */
+.wsbb-ic-mode-marquee {
+  overflow: hidden;
+}
+
+.wsbb-ic-marquee-track {
+  display: flex;
+  gap: var(--wsbb-gap, 20px);
+  width: fit-content;
+}
+
+.wsbb-ic-marquee-item {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* Pause on hover */
+.wsbb-ic-marquee-paused .wsbb-ic-marquee-track {
+  animation-play-state: paused !important;
+}
+
+/* ===== Navigation (shared) ===== */
+.wsbb-carousel-prev,
+.wsbb-carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.wsbb-carousel-prev:hover,
+.wsbb-carousel-next:hover {
+  background: #fff;
+  border-color: #aaa;
+  color: #0073aa;
+}
+
+.wsbb-carousel-prev {
+  left: 10px;
+}
+
+.wsbb-carousel-next {
+  right: 10px;
+}
+
+.wsbb-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.wsbb-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.wsbb-carousel-dot.wsbb-active {
+  background: #0073aa;
+  border-color: #0073aa;
+}
+
+.wsbb-carousel-dot:hover {
+  border-color: #0073aa;
+}
+
+/* ===== Empty ===== */
+.wsbb-image-carousel-empty {
+  text-align: center;
+  color: #888;
+  padding: 30px;
+}
