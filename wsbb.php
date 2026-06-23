@@ -41,7 +41,7 @@ function wsbb_load_modules()
     require_once WSBB_MODULES_DIR . 'wsbb-visual-editor/wsbb-visual-editor.php';
   }
 }
-add_action('init', 'wsbb_load_modules');
+add_action('init', 'wsbb_load_modules', 99);
 
 function activate_wsbb()
 {

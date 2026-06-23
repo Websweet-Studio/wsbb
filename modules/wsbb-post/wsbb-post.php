@@ -26,6 +26,19 @@ class Wsbb_Post extends FLBuilderModule
     }
 
     /**
+     * Get all public post types for the post_type options dropdown.
+     */
+    public static function get_post_type_options()
+    {
+        $post_types = get_post_types(array('public' => true), 'objects');
+        $options = array();
+        foreach ($post_types as $slug => $pt) {
+            $options[$slug] = $pt->labels->singular_name;
+        }
+        return $options;
+    }
+
+    /**
      * Render custom layout with [wsbb ...] shortcodes.
      */
     public static function render_custom_layout($template, $post_id)
@@ -145,6 +158,66 @@ class Wsbb_Post extends FLBuilderModule
             $output
         );
 
+        // [wsbb post:terms_list taxonomy="category" html_list="no" display="name" separator=", " limit="0" linked="no" orderby="name" order="SORT_ASC"]
+        $output = preg_replace_callback(
+            '/\[wsbb\s+post:terms_list\s+(.*?)\]/',
+            function ($matches) use ($post_id) {
+                $atts = self::parse_shortcode_atts($matches[1]);
+                $taxonomy  = isset($atts['taxonomy']) ? $atts['taxonomy'] : 'category';
+                $html_list = isset($atts['html_list']) && $atts['html_list'] === 'yes';
+                $display   = isset($atts['display']) ? $atts['display'] : 'name';
+                $separator = isset($atts['separator']) ? $atts['separator'] : ', ';
+                $limit     = isset($atts['limit']) ? intval($atts['limit']) : 0;
+                $linked    = isset($atts['linked']) && $atts['linked'] === 'yes';
+                $orderby   = isset($atts['orderby']) ? $atts['orderby'] : 'name';
+                $order     = isset($atts['order']) ? $atts['order'] : 'SORT_ASC';
+
+                $terms = wp_get_post_terms($post_id, $taxonomy, array('orderby' => $orderby, 'order' => $order));
+                if (is_wp_error($terms) || empty($terms)) {
+                    return '';
+                }
+
+                if ($limit > 0) {
+                    $terms = array_slice($terms, 0, $limit);
+                }
+
+                $items = array();
+                foreach ($terms as $term) {
+                    $text = '';
+                    if ($display === 'slug') {
+                        $text = $term->slug;
+                    } else {
+                        $text = $term->name;
+                    }
+
+                    if ($linked) {
+                        $link = get_term_link($term);
+                        if (!is_wp_error($link)) {
+                            $text = '<a href="' . esc_url($link) . '">' . esc_html($text) . '</a>';
+                        } else {
+                            $text = esc_html($text);
+                        }
+                    } else {
+                        $text = esc_html($text);
+                    }
+
+                    $items[] = $text;
+                }
+
+                if ($html_list) {
+                    $out = '<ul>';
+                    foreach ($items as $item) {
+                        $out .= '<li>' . $item . '</li>';
+                    }
+                    $out .= '</ul>';
+                    return $out;
+                }
+
+                return implode($separator, $items);
+            },
+            $output
+        );
+
         // [wsbb post:title]
         $output = preg_replace_callback(
             '/\[wsbb\s+post:title\]/',
@@ -154,7 +227,58 @@ class Wsbb_Post extends FLBuilderModule
             $output
         );
 
+        // [wp_store_thumbnail id="..."], [wp_store_price id="..."], etc.
+        $output = preg_replace_callback(
+            '/\[(wp_store_thumbnail|wp_store_price|wp_store_add_to_cart|wp_store_detail|wp_store_add_to_wishlist)\s*(.*?)\]/s',
+            function ($matches) use ($post_id) {
+                return self::render_wp_store_shortcode($matches[1], $matches[2], $post_id);
+            },
+            $output
+        );
+
         return $output;
+    }
+
+    /**
+     * Render a wp-store shortcode by delegating to the WpStore Shortcode class.
+     */
+    private static function render_wp_store_shortcode($tag, $atts_string, $post_id)
+    {
+        static $wps_shortcode = null;
+        static $wps_loaded = false;
+
+        if (!$wps_loaded) {
+            $wps_loaded = true;
+            if (class_exists('\\WpStore\\Frontend\\Shortcode')) {
+                $wps_shortcode = new \WpStore\Frontend\Shortcode();
+            }
+        }
+
+        if (!$wps_shortcode) {
+            return '';
+        }
+
+        $map = array(
+            'wp_store_thumbnail'        => 'render_thumbnail',
+            'wp_store_price'            => 'render_price',
+            'wp_store_add_to_cart'      => 'render_add_to_cart',
+            'wp_store_detail'           => 'render_detail',
+            'wp_store_add_to_wishlist'  => 'render_add_to_wishlist',
+        );
+
+        if (!isset($map[$tag])) {
+            return '';
+        }
+
+        // Parse user-supplied atts
+        $atts = self::parse_shortcode_atts($atts_string);
+        // Auto-inject id if not provided by user
+        if (!isset($atts['id'])) {
+            $atts['id'] = $post_id;
+        }
+
+        $method = $map[$tag];
+        return call_user_func(array($wps_shortcode, $method), $atts);
     }
 
     /**
@@ -198,10 +322,7 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'type'    => 'select',
                         'label'   => __('Post Type', 'wsbb'),
                         'default' => 'post',
-                        'options' => array(
-                            'post' => __('Post', 'wsbb'),
-                            'page' => __('Page', 'wsbb'),
-                        ),
+                        'options' => Wsbb_Post::get_post_type_options(),
                     ),
                     'posts_per_page' => array(
                         'type'        => 'unit',
