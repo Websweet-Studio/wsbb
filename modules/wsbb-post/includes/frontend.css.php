@@ -64,6 +64,12 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
   .fl-node-<?php echo $id; ?> .wsbb-post-item {
   flex: 0 0 calc((100% - (<?php echo intval($settings->carousel_slides); ?> - 1) * <?php echo intval($settings->carousel_gap); ?>px) / <?php echo intval($settings->carousel_slides); ?>);
   }
+
+  @media (max-width: 768px) {
+    .fl-node-<?php echo $id; ?> .wsbb-post-item {
+      flex: 0 0 calc((100% - (2 - 1) * <?php echo intval($settings->carousel_gap); ?>px) / 2);
+    }
+  }
 <?php endif; ?>
 
 /* ===== Common ===== */
