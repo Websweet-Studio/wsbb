@@ -530,6 +530,15 @@ FLBuilder::register_module('Wsbb_Post', array(
                             'no'  => __('No', 'wsbb'),
                         ),
                     ),
+                    'carousel_loop' => array(
+                        'type'    => 'select',
+                        'label'   => __('Infinite Loop', 'wsbb'),
+                        'default' => 'yes',
+                        'options' => array(
+                            'yes' => __('Yes', 'wsbb'),
+                            'no'  => __('No', 'wsbb'),
+                        ),
+                    ),
                 ),
             ),
             'style' => array(

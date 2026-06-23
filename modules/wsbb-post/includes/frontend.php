@@ -34,7 +34,8 @@ $is_carousel    = $layout_type === 'carousel';
            data-autoplay="<?php echo esc_attr($settings->carousel_autoplay); ?>"
            data-autoplay-speed="<?php echo intval($settings->carousel_autoplay_speed); ?>"
            data-arrows="<?php echo esc_attr($settings->carousel_arrows); ?>"
-           data-dots="<?php echo esc_attr($settings->carousel_dots); ?>">
+           data-dots="<?php echo esc_attr($settings->carousel_dots); ?>"
+           data-loop="<?php echo esc_attr($settings->carousel_loop); ?>">
 
         <?php if ($settings->carousel_arrows === 'yes'): ?>
         <button class="wsbb-carousel-prev" type="button" aria-label="<?php _e('Previous', 'wsbb'); ?>">&lsaquo;</button>
