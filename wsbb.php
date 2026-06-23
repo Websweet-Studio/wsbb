@@ -21,6 +21,19 @@ if (!defined('WPINC')) {
 
 define('WSBB_VERSION', '0.0.1');
 define('WSBB_PLUGIN_DIR_URL', plugin_dir_url(__FILE__));
+define('WSBB_MODULES_DIR', plugin_dir_path(__FILE__) . 'modules/');
+define('WSBB_MODULES_URL', plugins_url('/modules/', __FILE__));
+
+/**
+ * Load Beaver Builder custom modules.
+ */
+function wsbb_load_modules()
+{
+  if (class_exists('FLBuilder')) {
+    require_once WSBB_MODULES_DIR . 'wsbb-gallery/wsbb-gallery.php';
+  }
+}
+add_action('init', 'wsbb_load_modules');
 
 function activate_wsbb()
 {

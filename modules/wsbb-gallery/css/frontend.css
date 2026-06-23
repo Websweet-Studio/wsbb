@@ -1,0 +1,177 @@
+.wsbb-gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ===== Masonry Style ===== */
+.wsbb-gallery-masonry {
+  display: block !important;
+  flex-wrap: unset;
+}
+
+.wsbb-gallery-masonry .wsbb-gallery-item {
+  break-inside: avoid;
+  flex: unset !important;
+  max-width: 100% !important;
+  width: 100%;
+}
+
+.wsbb-gallery-item-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.wsbb-gallery-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+/* ===== Grid Aspect Ratios ===== */
+.wsbb-gallery-grid.wsbb-aspect-4-3:not(.wsbb-gallery-masonry) img {
+  aspect-ratio: 4 / 3;
+}
+
+.wsbb-gallery-grid.wsbb-aspect-16-9:not(.wsbb-gallery-masonry) img {
+  aspect-ratio: 16 / 9;
+}
+
+.wsbb-gallery-grid.wsbb-aspect-1-1:not(.wsbb-gallery-masonry) img {
+  aspect-ratio: 1 / 1;
+}
+
+.wsbb-gallery-grid.wsbb-aspect-3-2:not(.wsbb-gallery-masonry) img {
+  aspect-ratio: 3 / 2;
+}
+
+.wsbb-gallery-grid.wsbb-aspect-original:not(.wsbb-gallery-masonry) img {
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #f5f5f5;
+}
+
+/* ===== Hover Effects ===== */
+.wsbb-hover-zoom .wsbb-gallery-link:hover img {
+  transform: scale(1.08);
+}
+
+.wsbb-hover-fade .wsbb-gallery-link img {
+  transition: opacity 0.35s ease;
+}
+.wsbb-hover-fade .wsbb-gallery-link:hover img {
+  opacity: 0.65;
+  transform: none;
+}
+
+.wsbb-hover-none .wsbb-gallery-link:hover img {
+  transform: none;
+}
+
+.wsbb-gallery-link {
+  display: block;
+  cursor: pointer;
+}
+
+/* Lightbox Overlay */
+.wsbb-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.wsbb-lightbox-overlay.wsbb-active {
+  display: flex;
+  animation: wsbb-fade-in 0.3s ease;
+}
+
+@keyframes wsbb-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.wsbb-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  text-align: center;
+}
+
+.wsbb-lightbox-image {
+  max-width: 100%;
+  max-height: 85vh;
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.wsbb-lightbox-caption {
+  color: #fff;
+  font-size: 15px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.wsbb-lightbox-close {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 1000001;
+  line-height: 1;
+  transition: opacity 0.2s;
+}
+
+.wsbb-lightbox-close:hover {
+  opacity: 0.7;
+}
+
+.wsbb-lightbox-prev,
+.wsbb-lightbox-next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 52px;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 1000001;
+  line-height: 1;
+  padding: 20px;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+
+.wsbb-lightbox-prev {
+  left: 15px;
+}
+
+.wsbb-lightbox-next {
+  right: 15px;
+}
+
+.wsbb-lightbox-prev:hover,
+.wsbb-lightbox-next:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .wsbb-lightbox-prev { left: 5px; font-size: 36px; padding: 10px; }
+  .wsbb-lightbox-next { right: 5px; font-size: 36px; padding: 10px; }
+}

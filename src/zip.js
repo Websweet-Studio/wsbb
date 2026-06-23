@@ -1,0 +1,91 @@
+const fs = require("fs-extra");
+const archiver = require("archiver");
+const path = require("path");
+const glob = require("glob");
+const packageJson = require("../package.json");
+
+// Read wsbb.php to get the version
+const phpFilePath = path.join(__dirname, "../wsbb.php");
+const phpContent = fs.readFileSync(phpFilePath, "utf8");
+const versionMatch = phpContent.match(/Version:\s+([0-9.]+)/);
+
+// Nama folder dan file zip yang akan dibuat
+const pluginName = packageJson.name;
+const pluginVersion = versionMatch ? versionMatch[1] : packageJson.version;
+const outputFolder = path.join(__dirname, "../dist");
+const tempFolder = path.join(outputFolder, pluginName);
+const outputFileName = `${pluginName}-${pluginVersion}.zip`;
+const outputPath = path.join(outputFolder, outputFileName);
+
+// Fungsi untuk menghapus folder
+const clearFolder = (folderPath) => {
+  if (fs.existsSync(folderPath)) {
+    fs.rmSync(folderPath, { recursive: true, force: true });
+  }
+};
+
+// Pastikan folder 'dist' ada dan kosongkan isinya
+if (!fs.existsSync(outputFolder)) {
+  fs.mkdirSync(outputFolder);
+} else {
+  clearFolder(outputFolder);
+}
+
+// Hapus folder sementara jika sudah ada
+if (fs.existsSync(tempFolder)) {
+  clearFolder(tempFolder);
+}
+
+// Buat folder sementara berdasarkan nama plugin
+fs.mkdirSync(tempFolder, { recursive: true });
+
+// Salin file ke dalam folder sementara
+const files = glob.sync("**/*", {
+  cwd: path.join(__dirname, ".."),
+  ignore: [
+    "dist/**",
+    "src/**",
+    "node_modules/**",
+    "package.json",
+    "package-lock.json",
+    ".trae/**",
+    ".gitignore",
+  ],
+});
+
+files.forEach((file) => {
+  const filePath = path.join(__dirname, "..", file);
+  const destPath = path.join(tempFolder, file);
+
+  // Salin file atau folder
+  fs.copySync(filePath, destPath);
+});
+
+// Membuat file output stream
+const output = fs.createWriteStream(outputPath);
+const archive = archiver("zip", {
+  zlib: { level: 9 }, // Compression level
+});
+
+// Event listener saat proses selesai
+output.on("close", function () {
+  console.log(archive.pointer() + " total bytes");
+  console.log("File zip telah dibuat: " + outputFileName);
+
+  // Hapus folder sementara setelah zip selesai
+  clearFolder(tempFolder);
+});
+
+// Event listener saat error
+archive.on("error", function (err) {
+  throw err;
+});
+
+// Pipe archive data ke file
+archive.pipe(output);
+
+// Append file dari folder sementara ke archive
+archive.directory(tempFolder, pluginName);
+
+// Finalize the archive
+archive.finalize();
