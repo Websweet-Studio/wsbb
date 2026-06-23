@@ -171,6 +171,8 @@ class Wsbb_Post extends FLBuilderModule
                 $linked    = isset($atts['linked']) && $atts['linked'] === 'yes';
                 $orderby   = isset($atts['orderby']) ? $atts['orderby'] : 'name';
                 $order     = isset($atts['order']) ? $atts['order'] : 'SORT_ASC';
+                // Normalize SORT_ASC/SORT_DESC to ASC/DESC for wp_get_post_terms
+                $order = str_replace('SORT_', '', $order);
 
                 $terms = wp_get_post_terms($post_id, $taxonomy, array('orderby' => $orderby, 'order' => $order));
                 if (is_wp_error($terms) || empty($terms)) {
@@ -287,9 +289,11 @@ class Wsbb_Post extends FLBuilderModule
     private static function parse_shortcode_atts($atts_string)
     {
         $atts = array();
-        preg_match_all('/(\w+)\s*=\s*"([^"]*)"/', $atts_string, $matches, PREG_SET_ORDER);
-        foreach ($matches as $match) {
-            $atts[$match[1]] = $match[2];
+        preg_match_all('/(\w+)\s*=\s*(["\'])([^"\']*)\2/', $atts_string, $matches, PREG_SET_ORDER);
+        // Build atts, using match[3] as value (the capture inside the quotes)
+        $atts = array();
+        foreach ($matches as $m) {
+            $atts[$m[1]] = $m[3];
         }
         return $atts;
     }
