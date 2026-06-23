@@ -81,3 +81,27 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
 .fl-node-<?php echo $id; ?> .wsbb-post-pagination {
   text-align: <?php echo esc_attr($settings->pagination_align); ?>;
 }
+
+/* ===== Custom Card CSS ===== */
+<?php if ($is_custom && !empty($settings->custom_css)): ?>
+<?php
+  // Scope user CSS to this module instance to prevent leaking to other modules
+  $css = $settings->custom_css;
+  $css = preg_replace_callback(
+    '/([^{}]+)(\{[^}]*\})/',
+    function ($m) use ($id) {
+      $selector = trim($m[1]);
+      // Skip comment-only lines (no actual selector)
+      if ($selector === '' || strpos($selector, '/*') === 0) {
+        if (strpos(trim($m[2]), '/*') === false) {
+          return '.fl-node-' . $id . ' ' . $m[2];
+        }
+        return $m[0];
+      }
+      return '.fl-node-' . $id . ' ' . $selector . ' ' . $m[2];
+    },
+    $css
+  );
+  echo $css;
+?>
+<?php endif; ?>

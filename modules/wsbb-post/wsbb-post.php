@@ -290,44 +290,141 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'editor'  => 'html',
                         'label'   => __('Post Card HTML', 'wsbb'),
                         'default' => '[wsbb-if post:featured_image]
-<div class="wsbb-post-thumbnail wsbb-post-section">
+<div class="wsbb-post-thumbnail">
   [wsbb post:featured_image size="large" display="tag" linked="yes"]
 </div>
 [/wsbb-if]
 
-<h3 class="wsbb-post-heading wsbb-post-section">[wsbb post:link text="title"]</h3>
+<div class="wsbb-post-content">
+<h3 class="wsbb-post-heading">[wsbb post:link text="title"]</h3>
 
-<h5 class="wsbb-post-meta wsbb-post-section">
+<h5 class="wsbb-post-meta">
   By<span class="wsbb-posted-by"> [wsbb post:author_name link="yes"] </span> | <span class="wsbb-meta-date"> [wsbb post:date format="F j, Y"] </span>
 </h5>
 
-<div class="wsbb-post-description wsbb-post-section">
+<div class="wsbb-post-description">
   [wsbb post:excerpt length="55" more="..."]
 </div>
 
 <p class="wsbb-read-more-text">
   [wsbb post:link text="custom" custom_text="Read More »"]
-</p>',
+</p>
+</div>',
                         'rows' => '20',
                         'help'    => __('HTML for inner content of each post card. Use [wsbb] shortcodes. See reference below.', 'wsbb'),
+                    ),
+                    'custom_css' => array(
+                        'type'    => 'code',
+                        'editor'  => 'css',
+                        'label'   => __('Post Card CSS', 'wsbb'),
+                        'default' => '/* === Post Card Styles === */
+.wsbb-post-card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+.wsbb-post-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Featured Image */
+.wsbb-post-thumbnail {
+  overflow: hidden;
+  line-height: 0;
+}
+.wsbb-post-thumbnail img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.wsbb-post-thumbnail a:hover img {
+  transform: scale(1.05);
+}
+
+/* Headings */
+.wsbb-post-heading {
+  margin: 16px 0 8px;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+.wsbb-post-heading a {
+  color: inherit;
+  text-decoration: none;
+}
+.wsbb-post-heading a:hover {
+  color: #0073aa;
+}
+
+/* Meta */
+.wsbb-post-meta {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 10px;
+}
+.wsbb-posted-by a {
+  color: #888;
+  text-decoration: none;
+}
+.wsbb-posted-by a:hover {
+  color: #0073aa;
+}
+
+/* Excerpt */
+.wsbb-post-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Read More */
+.wsbb-read-more-text {
+  margin: 8px 0 16px;
+}
+.wsbb-read-more-text a {
+  display: inline-block;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: #0073aa;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.wsbb-read-more-text a:hover {
+  background: #005177;
+  color: #fff;
+}
+
+/* Section Spacing */
+.wsbb-post-content {
+  padding: 15px;
+}
+.wsbb-post-content > *:first-child {
+  margin-top: 0;
+}
+.wsbb-post-content > *:last-child {
+  margin-bottom: 0;
+}',
+                        'rows'    => '12',
+                        'help'    => __('Custom CSS for styling your post card elements. Use class names from your HTML above.', 'wsbb'),
                     ),
                     'shortcode_reference' => array(
                         'type'    => 'raw',
                         'label'   => __('Available Shortcodes', 'wsbb'),
-                        'content' => '<div style="background:#f8f9fa;border:1px solid #ddd;border-radius:4px;padding:12px;font-size:13px;line-height:1.7;max-height:360px;overflow-y:auto;">
-<table style="width:100%;border-collapse:collapse;">
-<thead><tr style="background:#e9ecef;"><th style="padding:6px 8px;text-align:left;border:1px solid #ddd;">Shortcode</th><th style="padding:6px 8px;text-align:left;border:1px solid #ddd;">Keterangan</th></tr></thead>
-<tbody>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb post:featured_image size="large" display="tag" linked="yes"]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Featured image. <code>size</code>: thumbnail/medium/large/full, <code>display</code>: tag|url, <code>linked</code>: yes|no</td></tr>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb post:title]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Judul post (plain text, tanpa link)</td></tr>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb post:link text="title"]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Link ke post dengan teks judul. <code>text="custom" custom_text="Read More"</code></td></tr>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb post:author_name link="yes"]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Nama author. <code>link</code>: yes|no</td></tr>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb post:date format="F j, Y"]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Tanggal post. <code>format</code>: PHP date format (default: WP date format)</td></tr>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb post:excerpt length="55" more="..."]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Excerpt. <code>length</code>: jumlah kata, <code>more</code>: suffix teks</td></tr>
-<tr><td style="padding:4px 8px;border:1px solid #ddd;"><code>[wsbb-if post:featured_image]...[/wsbb-if]</code></td><td style="padding:4px 8px;border:1px solid #ddd;">Conditional: tampilkan konten di dalamnya hanya jika post punya featured image</td></tr>
-</tbody>
-</table>
-</div>',
+                        'content' => '<div style="background:#f8f9fa;border:1px solid #dee2e6;border-radius:3px;padding:8px 12px;font-family:monospace;font-size:12px;line-height:1.9;">'
+                            . '<b>[wsbb post:featured_image size="large" display="tag" linked="yes"]</b> — Featured image. size: thumbnail/medium/large/full, display: tag|url, linked: yes|no<br>'
+                            . '<b>[wsbb post:title]</b> — Judul post (plain text, tanpa link)<br>'
+                            . '<b>[wsbb post:link text="title"]</b> — Link ke post. text="custom" custom_text="Read More"<br>'
+                            . '<b>[wsbb post:author_name link="yes"]</b> — Nama author. link: yes|no<br>'
+                            . '<b>[wsbb post:date format="F j, Y"]</b> — Tanggal post. format: PHP date format<br>'
+                            . '<b>[wsbb post:excerpt length="55" more="..."]</b> — Excerpt. length: jumlah kata, more: suffix<br>'
+                            . '<b>[wsbb-if post:featured_image]...[/wsbb-if]</b> — Conditional: tampilkan hanya jika post punya featured image'
+                            . '</div>',
                     ),
                 ),
             ),
