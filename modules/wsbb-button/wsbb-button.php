@@ -49,10 +49,29 @@ FLBuilder::register_module('Wsbb_Button', array(
                         'show_target'   => true,
                         'show_nofollow' => true,
                     ),
+                    'button_icon' => array(
+                        'type'        => 'icon',
+                        'label'       => __('Icon', 'wsbb'),
+                        'show_remove' => true,
+                    ),
+                    'icon_position' => array(
+                        'type'    => 'select',
+                        'label'   => __('Icon Position', 'wsbb'),
+                        'default' => 'before',
+                        'options' => array(
+                            'before' => __('Before Text', 'wsbb'),
+                            'after'  => __('After Text', 'wsbb'),
+                        ),
+                    ),
                 ),
             ),
+        ),
+    ),
+    'style' => array(
+        'title'    => __('Style', 'wsbb'),
+        'sections' => array(
             'style' => array(
-                'title'  => __('Style', 'wsbb'),
+                'title'  => __('Button Style', 'wsbb'),
                 'fields' => array(
                     'align' => array(
                         'type'    => 'align',
@@ -76,6 +95,19 @@ FLBuilder::register_module('Wsbb_Button', array(
                             'property' => 'color',
                         ),
                     ),
+                    'bg_type' => array(
+                        'type'    => 'select',
+                        'label'   => __('Background Type', 'wsbb'),
+                        'default' => 'solid',
+                        'options' => array(
+                            'solid'    => __('Solid', 'wsbb'),
+                            'gradient' => __('Gradient', 'wsbb'),
+                        ),
+                        'toggle' => array(
+                            'solid'    => array('fields' => array('bg_color')),
+                            'gradient' => array('fields' => array('bg_gradient')),
+                        ),
+                    ),
                     'bg_color' => array(
                         'type'       => 'color',
                         'label'      => __('Background Color', 'wsbb'),
@@ -86,6 +118,15 @@ FLBuilder::register_module('Wsbb_Button', array(
                             'type'     => 'css',
                             'selector' => '.wsbb-button-link',
                             'property' => 'background-color',
+                        ),
+                    ),
+                    'bg_gradient' => array(
+                        'type'    => 'gradient',
+                        'label'   => __('Background Gradient', 'wsbb'),
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'background-image',
                         ),
                     ),
                     'bg_hover_color' => array(

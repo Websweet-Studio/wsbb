@@ -12,6 +12,12 @@ class Wsbb
         $this->plugin_name = 'wsbb';
 
         $this->load_dependencies();
+        if (is_admin() || (defined('DOING_CRON') && DOING_CRON)) {
+            new Wsbb_Auto_Updater(
+                plugin_dir_path(dirname(__FILE__)) . 'wsbb.php',
+                $this->version
+            );
+        }
         $this->set_locale();
         $this->define_admin_hooks();
         $this->define_public_hooks();
@@ -21,6 +27,7 @@ class Wsbb
     {
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-wsbb-loader.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-wsbb-i18n.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-wsbb-auto-updater.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-wsbb-admin.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-wsbb-public.php';
 
