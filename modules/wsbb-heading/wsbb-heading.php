@@ -38,7 +38,7 @@ FLBuilder::register_module('Wsbb_Heading', array(
                         'label'   => __('Heading Text', 'wsbb'),
                         'default' => 'Your Heading Here',
                         'preview' => array(
-                            'type'   => 'text',
+                            'type'     => 'text',
                             'selector' => '.wsbb-heading-text',
                         ),
                     ),
@@ -57,8 +57,13 @@ FLBuilder::register_module('Wsbb_Heading', array(
                     ),
                 ),
             ),
-            'style' => array(
-                'title'  => __('Style', 'wsbb'),
+        ),
+    ),
+    'style' => array(
+        'title'    => __('Style', 'wsbb'),
+        'sections' => array(
+            'alignment' => array(
+                'title'  => __('Alignment', 'wsbb'),
                 'fields' => array(
                     'align' => array(
                         'type'    => 'align',
@@ -68,6 +73,19 @@ FLBuilder::register_module('Wsbb_Heading', array(
                             'type'     => 'css',
                             'selector' => '.wsbb-heading-text',
                             'property' => 'text-align',
+                        ),
+                    ),
+                ),
+            ),
+            'typography' => array(
+                'title'  => __('Typography', 'wsbb'),
+                'fields' => array(
+                    'heading_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Font Family', 'wsbb'),
+                        'default' => array(
+                            'family' => 'Default',
+                            'weight' => '700',
                         ),
                     ),
                     'text_color' => array(
@@ -85,29 +103,11 @@ FLBuilder::register_module('Wsbb_Heading', array(
                         'type'        => 'unit',
                         'label'       => __('Font Size', 'wsbb'),
                         'description' => 'px',
+                        'responsive'  => true,
                         'preview'     => array(
                             'type'     => 'css',
                             'selector' => '.wsbb-heading-text',
                             'property' => 'font-size',
-                        ),
-                    ),
-                    'font_weight' => array(
-                        'type'    => 'select',
-                        'label'   => __('Font Weight', 'wsbb'),
-                        'default' => '700',
-                        'options' => array(
-                            '300' => '300',
-                            '400' => '400',
-                            '500' => '500',
-                            '600' => '600',
-                            '700' => '700',
-                            '800' => '800',
-                            '900' => '900',
-                        ),
-                        'preview' => array(
-                            'type'     => 'css',
-                            'selector' => '.wsbb-heading-text',
-                            'property' => 'font-weight',
                         ),
                     ),
                     'line_height' => array(
