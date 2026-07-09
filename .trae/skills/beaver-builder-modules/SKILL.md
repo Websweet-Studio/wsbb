@@ -181,22 +181,22 @@ console.log("Text: <?php echo $settings->text_field; ?>");
 
 ## 08: Module Property Reference
 
-| Property           | Type         | Description                                                                                                      |
-| ------------------ | ------------ | ---------------------------------------------------------------------------------------------------------------- |
-| `$name`            | string       | Module name shown in BB's module list                                                                            |
-| `$description`     | string       | Short description (not currently shown in UI)                                                                    |
-| `$category`        | string       | Category in BB's module list                                                                                     |
-| `$group`           | string       | Group in BB's group selector. Omit for Standard Modules group                                                    |
-| `$dir`             | string       | Directory path to module (include trailing slash)                                                                |
-| `$url`             | string       | URL path to module (include trailing slash)                                                                      |
-| `$icon`            | string       | SVG icon for module                                                                                              |
-| `$editor_export`   | bool         | Set false to prevent export to default WP editor                                                                 |
-| `$enabled`         | bool         | Set false to hide from BB's module list                                                                          |
-| `$node`            | string       | Module's unique permanent ID                                                                                     |
-| `$partial_refresh` | bool         | Enable partial refresh                                                                                           |
-| `$include_wrapper` | bool         | Recommended false. When false, render attributes in frontend.php: `<div <?php $module->render_attributes(); ?>>` |
-| `$accepts`         | string/array | Array of module slugs allowed to nest inside, or `'all'`. Default empty (no nesting). NEW in 2.11                |
-| `$block_editor`    | bool         | NEW in 2.11: Set true to make module work in WordPress block editor                                              |
+| Property           | Type         | Description                                                                                                                                                   |
+| ------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `$name`            | string       | Module name shown in BB's module list                                                                                                                         |
+| `$description`     | string       | Short description (not currently shown in UI)                                                                                                                 |
+| `$category`        | string       | Category in BB's module list                                                                                                                                  |
+| `$group`           | string       | Group in BB's group selector. Omit for Standard Modules group                                                                                                 |
+| `$dir`             | string       | Directory path to module (include trailing slash)                                                                                                             |
+| `$url`             | string       | URL path to module (include trailing slash)                                                                                                                   |
+| `$icon`            | string       | Dashicon name (e.g. `'products'`, `'welcome-write-blog'`). BB auto-adds `dashicons-` prefix. For SVG, must be registered separately. Default icon if omitted. |
+| `$editor_export`   | bool         | Set false to prevent export to default WP editor                                                                                                              |
+| `$enabled`         | bool         | Set false to hide from BB's module list                                                                                                                       |
+| `$node`            | string       | Module's unique permanent ID                                                                                                                                  |
+| `$partial_refresh` | bool         | Enable partial refresh                                                                                                                                        |
+| `$include_wrapper` | bool         | Recommended false. When false, render attributes in frontend.php: `<div <?php $module->render_attributes(); ?>>`                                              |
+| `$accepts`         | string/array | Array of module slugs allowed to nest inside, or `'all'`. Default empty (no nesting). NEW in 2.11                                                             |
+| `$block_editor`    | bool         | NEW in 2.11: Set true to make module work in WordPress block editor                                                                                           |
 
 ## 09: Module Method Reference
 

@@ -11,7 +11,7 @@ class Wsbb_Pricelist extends FLBuilderModule
             'category'        => __('Layout', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-pricelist/',
             'url'             => WSBB_MODULES_URL . 'wsbb-pricelist/',
-            'icon'            => 'price-tag.svg',
+            'icon'            => 'products',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,

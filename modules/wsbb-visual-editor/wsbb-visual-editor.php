@@ -11,7 +11,7 @@ class Wsbb_Visual_Editor extends FLBuilderModule
             'category'        => __('Layout', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-visual-editor/',
             'url'             => WSBB_MODULES_URL . 'wsbb-visual-editor/',
-            'icon'            => 'editor-alignleft.svg',
+            'icon'            => 'welcome-write-blog',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
