@@ -37,6 +37,32 @@ $letter_spacing   = isset($settings->letter_spacing) ? floatval($settings->lette
 $button_style     = isset($settings->button_style) ? $settings->button_style : 'filled';
 $show_shadow      = isset($settings->box_shadow) ? $settings->box_shadow : 'no';
 $shadow_hover     = isset($settings->shadow_hover) ? $settings->shadow_hover : 'no';
+
+// ── Style-specific overrides ──────────────────────────────
+// Outlined: fallback border_color ke bg_color biar border terlihat
+if ($button_style === 'outlined' && empty($border_color)) {
+    $border_color = $bg_color;
+}
+
+// Outlined: text color selalu ikut border
+if ($button_style === 'outlined') {
+    $text_color = $border_color;
+}
+
+// Ghost: text_color pakai bg_color biar keliatan
+if ($button_style === 'ghost') {
+    $text_color = $bg_color;
+}
+
+// Ghost: fallback bg_hover_color ke bg_color biar hover tampil
+if ($button_style === 'ghost' && empty($bg_hover_color)) {
+    $bg_hover_color = $bg_color;
+}
+
+// Ghost: hover text jadi putih biar kontras saat bg muncul
+if ($button_style === 'ghost' && empty($text_hover_color)) {
+    $text_hover_color = '#ffffff';
+}
 ?>
 
 /* ── Base ──────────────────────────────────────────────── */
@@ -64,10 +90,12 @@ $shadow_hover     = isset($settings->shadow_hover) ? $settings->shadow_hover : '
     <?php endif; ?>
 }
 
-/* ── Ghost style → transparent bg ──────────────────────── */
-.fl-node-<?php echo $id; ?> .wsbb-button--ghost {
-    background: transparent !important;
+/* ── Outlined / Ghost → transparent bg ────────────────── */
+<?php if ($button_style === 'outlined' || $button_style === 'ghost'): ?>
+.fl-node-<?php echo $id; ?> .wsbb-button--<?php echo $button_style; ?> {
+    background: transparent;
 }
+<?php endif; ?>
 
 /* ── Hover ─────────────────────────────────────────────── */
 .fl-node-<?php echo $id; ?> .wsbb-button-link:hover {

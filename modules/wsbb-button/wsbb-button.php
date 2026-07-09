@@ -127,7 +127,6 @@ FLBuilder::register_module('Wsbb_Button', array(
                         'label'      => __('Text Color', 'wsbb'),
                         'show_reset' => true,
                         'show_alpha' => true,
-                        'default'    => 'ffffff',
                         'preview'    => array(
                             'type'     => 'css',
                             'selector' => '.wsbb-button-link',
