@@ -145,10 +145,21 @@ FLBuilder::register_module('Wsbb_Action', array(
                             'stacked' => __('Below Description', 'wsbb'),
                         ),
                     ),
+                    'btn_style'      => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Button Style', 'wsbb'),
+                        'default' => 'filled',
+                        'options' => array(
+                            'filled'   => __('Filled', 'wsbb'),
+                            'outlined' => __('Outlined', 'wsbb'),
+                            'ghost'    => __('Ghost', 'wsbb'),
+                        ),
+                    ),
                     'btn_bg_color'   => array(
                         'type'       => 'color',
                         'label'      => __('Background Color', 'wsbb'),
                         'show_reset' => true,
+                        'show_alpha' => true,
                         'default'    => '2962ff',
                         'preview'    => array(
                             'type'     => 'css',
@@ -160,7 +171,7 @@ FLBuilder::register_module('Wsbb_Action', array(
                         'type'       => 'color',
                         'label'      => __('Text Color', 'wsbb'),
                         'show_reset' => true,
-                        'default'    => 'ffffff',
+                        'show_alpha' => true,
                         'preview'    => array(
                             'type'     => 'css',
                             'selector' => '.wsbb-action-btn',
@@ -177,6 +188,119 @@ FLBuilder::register_module('Wsbb_Action', array(
                         'type'       => 'color',
                         'label'      => __('Hover Text Color', 'wsbb'),
                         'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'btn_border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Radius', 'wsbb'),
+                        'default'     => '4',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-action-btn',
+                            'property' => 'border-radius',
+                        ),
+                    ),
+                    'btn_border_width' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Width', 'wsbb'),
+                        'default'     => '2',
+                        'description' => 'px',
+                    ),
+                    'btn_border_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Border Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'btn_border_hover_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Border Hover Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'btn_size_preset' => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Size', 'wsbb'),
+                        'default' => 'medium',
+                        'options' => array(
+                            'small'  => __('Small', 'wsbb'),
+                            'medium' => __('Medium', 'wsbb'),
+                            'large'  => __('Large', 'wsbb'),
+                            'custom' => __('Custom', 'wsbb'),
+                        ),
+                        'toggle' => array(
+                            'custom' => array(
+                                'fields' => array('btn_padding_h', 'btn_padding_v', 'btn_font_size'),
+                            ),
+                        ),
+                    ),
+                    'btn_padding_h' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Horizontal Padding', 'wsbb'),
+                        'default'     => '24',
+                        'description' => 'px',
+                    ),
+                    'btn_padding_v' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Vertical Padding', 'wsbb'),
+                        'default'     => '12',
+                        'description' => 'px',
+                    ),
+                    'btn_font_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Font Size', 'wsbb'),
+                        'default'     => '15',
+                        'description' => 'px',
+                        'responsive'  => true,
+                    ),
+                    'btn_font_weight' => array(
+                        'type'    => 'select',
+                        'label'   => __('Font Weight', 'wsbb'),
+                        'default' => '600',
+                        'options' => array(
+                            '400' => '400',
+                            '500' => '500',
+                            '600' => '600',
+                            '700' => '700',
+                        ),
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-action-btn',
+                            'property' => 'font-weight',
+                        ),
+                    ),
+                    'btn_letter_spacing' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Letter Spacing', 'wsbb'),
+                        'description' => 'px',
+                    ),
+                    'btn_full_width' => array(
+                        'type'    => 'select',
+                        'label'   => __('Full Width', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
+                        ),
+                    ),
+                    'btn_box_shadow' => array(
+                        'type'    => 'select',
+                        'label'   => __('Enable Shadow', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
+                        ),
+                    ),
+                    'btn_shadow_hover' => array(
+                        'type'    => 'select',
+                        'label'   => __('Shadow on Hover', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
+                        ),
                     ),
                 ),
             ),

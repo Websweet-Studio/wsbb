@@ -91,8 +91,14 @@ $image_size = isset($settings->image_size) ? $settings->image_size : 'medium_lar
                       </div>
                     <?php endif; ?>
 
-                    <?php if (!empty($settings->read_more_text)) : ?>
-                      <a class="wsbb-post-readmore" href="<?php the_permalink(); ?>">
+                    <?php if (!empty($settings->read_more_text)) :
+                      $btn_style = !empty($settings->btn_style) ? $settings->btn_style : 'filled';
+                      $btn_size  = !empty($settings->btn_size_preset) ? $settings->btn_size_preset : 'custom';
+                      $btn_full  = !empty($settings->btn_full_width) && 'yes' === $settings->btn_full_width;
+                      $btn_class = 'wsbb-post-readmore wsbb-post-btn--' . $btn_style . ' wsbb-post-btn-size--' . $btn_size;
+                      if ($btn_full) $btn_class .= ' wsbb-post-btn--full';
+                    ?>
+                      <a class="<?php echo esc_attr($btn_class); ?>" href="<?php the_permalink(); ?>">
                         <?php echo esc_html($settings->read_more_text); ?>
                       </a>
                     <?php endif; ?>

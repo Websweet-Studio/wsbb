@@ -352,37 +352,30 @@
 
 /* Button base */
 .wsbb-pricelist-btn {
-  display: block;
-  width: 100%;
+  display: inline-block;
   text-align: center;
   padding: 12px 24px;
   border-radius: 6px;
-  background: #2962ff;
-  color: #fff;
   text-decoration: none;
   font-weight: 600;
   font-size: 15px;
-  transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
   border: 2px solid transparent;
   box-sizing: border-box;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
 }
 
 .wsbb-pricelist-btn:hover {
-  opacity: 0.9;
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
-/* Button style: Outlined */
-.wsbb-pricelist-btn--outlined {
-  background: transparent;
-  border-color: #2962ff;
-  color: #2962ff;
+.wsbb-pricelist-btn:active {
+  transform: translateY(0);
 }
 
-.wsbb-pricelist-btn--outlined:hover {
-  background: #2962ff;
-  color: #fff;
-  opacity: 1;
+/* Full width */
+.wsbb-pricelist-btn--full {
+  display: block;
+  width: 100%;
 }

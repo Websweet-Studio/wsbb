@@ -89,14 +89,29 @@
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #0073aa;
   text-decoration: none;
-  transition: color 0.2s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
   align-self: flex-start;
 }
 
 .wsbb-post-readmore:hover {
-  color: #005177;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.wsbb-post-readmore:active {
+  transform: translateY(0);
+}
+
+/* Full width */
+.wsbb-post-btn--full {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-self: stretch;
 }
 
 /* ===== List Layout ===== */

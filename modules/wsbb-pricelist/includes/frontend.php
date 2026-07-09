@@ -6,6 +6,8 @@ $is_featured = ('yes' === $settings->featured);
 
 $card_style     = ! empty($settings->card_style) ? $settings->card_style : 'standard';
 $btn_style      = ! empty($settings->btn_style) ? $settings->btn_style : 'filled';
+$btn_size       = ! empty($settings->btn_size_preset) ? $settings->btn_size_preset : 'custom';
+$btn_full       = ! empty($settings->btn_full_width) && 'yes' === $settings->btn_full_width;
 $show_shadow    = ! empty($settings->show_shadow) ? $settings->show_shadow : 'yes';
 $content_align  = ! empty($settings->content_align) ? $settings->content_align : 'left';
 
@@ -17,6 +19,10 @@ $card_class .= ' wsbb-pricelist-card--align-' . $content_align;
 
 $btn_class   = 'wsbb-pricelist-btn';
 $btn_class  .= ' wsbb-pricelist-btn--' . $btn_style;
+$btn_class  .= ' wsbb-pricelist-btn-size--' . $btn_size;
+if ( $btn_full ) {
+    $btn_class .= ' wsbb-pricelist-btn--full';
+}
 
 $is_elevated = ('elevated' === $card_style);
 ?>
