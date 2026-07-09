@@ -1,84 +1,395 @@
-/* WSBB Menu Module - Global Styles */
+/* ── WSBB Menu Module ──────────────────────────────── */
 .wsbb-menu-wrap {
-    position: relative;
+  position: relative;
 }
 .wsbb-menu-nav {
-    line-height: 1;
+  line-height: 1.4;
 }
+
+/* ── Menu List ───────────────────────────────────────── */
 .wsbb-menu-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
-.wsbb-menu--vertical .wsbb-menu-list {
-    flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .wsbb-menu-list li {
-    position: relative;
+  position: relative;
 }
 .wsbb-menu-nav a {
-    transition: color 0.15s;
+  text-decoration: none;
+  display: block;
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+.wsbb-menu-nav a:hover,
+.wsbb-menu-nav a:focus {
+  color: #e60023;
+  background-color: #f5f5f5;
+}
+.wsbb-menu-nav a:focus-visible {
+  outline: 2px solid #e60023;
+  outline-offset: 2px;
 }
 
-/* Dropdown */
-.wsbb-menu-list .sub-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 200px;
-    list-style: none;
-    margin: 0;
-    padding: 8px 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(4px);
-    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
-    z-index: 999;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-radius: 8px;
+/* ── Vertical ────────────────────────────────────────── */
+.wsbb-menu--vertical .wsbb-menu-list {
+  flex-direction: column;
+  align-items: stretch;
 }
-.wsbb-menu-list li:hover > .sub-menu,
-.wsbb-menu-list li:focus-within > .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-.wsbb-menu-list .sub-menu .sub-menu {
-    top: 0;
-    left: 100%;
-}
-.wsbb-menu-list .sub-menu li {
-    display: block;
-}
-.wsbb-menu-list .sub-menu a {
-    display: block;
-    padding: 8px 20px;
-    white-space: nowrap;
+.wsbb-menu--vertical .wsbb-menu-list > li {
+  width: 100%;
 }
 
-/* Hamburger always visible */
-.wsbb-menu--hamburger .wsbb-menu-toggle {
-    display: inline-flex !important;
+/* ── Dropdown (horizontal/vertical) ──────────────────── */
+.wsbb-menu-nav .sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+  z-index: 999;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: block !important;
 }
-.wsbb-menu--hamburger .wsbb-menu-nav {
+
+/* Show dropdown on hover (desktop) */
+.wsbb-menu--horizontal li.wsbb-has-submenu:hover > .sub-menu,
+.wsbb-menu--vertical li.wsbb-has-submenu:hover > .sub-menu,
+.wsbb-menu--horizontal li.wsbb-has-submenu:focus-within > .sub-menu,
+.wsbb-menu--vertical li.wsbb-has-submenu:focus-within > .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Show dropdown via toggle click (wsbb-submenu-open) */
+.wsbb-menu-nav .wsbb-has-submenu.wsbb-submenu-open > .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Nested submenu */
+.wsbb-menu-nav .sub-menu .sub-menu {
+  top: -6px;
+  left: 100%;
+  margin-left: 4px;
+}
+.wsbb-menu-nav .sub-menu .sub-menu .sub-menu {
+  margin-left: 0;
+}
+.wsbb-menu-nav .sub-menu li {
+  display: block;
+}
+.wsbb-menu-nav .sub-menu a {
+  padding: 10px 20px;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 0;
+}
+.wsbb-menu-nav .sub-menu a:hover,
+.wsbb-menu-nav .sub-menu a:focus {
+  background-color: #f5f5f5;
+  color: #e60023;
+}
+
+/* ── Top-level link in dropdown (no border radius at corners) ── */
+.wsbb-menu-nav .sub-menu li:first-child a {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.wsbb-menu-nav .sub-menu li:last-child a {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* ── Submenu container + toggle button (walker) ────── */
+.wsbb-menu-nav .wsbb-has-submenu-container {
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  position: relative;
+}
+.wsbb-menu-nav .wsbb-has-submenu-container > a {
+  grid-column: 1;
+  border-radius: 6px 0 0 6px;
+}
+.wsbb-menu-nav .wsbb-submenu-toggle {
+  all: unset;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 2;
+  border-radius: 0 6px 6px 0;
+  transition: background-color 0.2s ease;
+}
+.wsbb-menu-nav .wsbb-submenu-toggle:hover {
+  background-color: #f0f0f0;
+}
+.wsbb-menu-nav .wsbb-submenu-toggle::after {
+  content: "";
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid #666;
+  border-bottom: 2px solid #666;
+  transform: rotate(45deg);
+  transition: transform 0.25s ease;
+}
+
+/* Toggle arrow rotation when submenu open */
+.wsbb-menu-nav
+  .wsbb-has-submenu.wsbb-submenu-open
+  > .wsbb-has-submenu-container
+  .wsbb-submenu-toggle::after,
+.wsbb-menu-nav
+  .wsbb-has-submenu:hover
+  > .wsbb-has-submenu-container
+  .wsbb-submenu-toggle::after {
+  transform: rotate(-135deg);
+}
+
+/* Plus icon */
+.wsbb-submenu-icon-plus .wsbb-submenu-toggle::after {
+  content: "+";
+  border: none;
+  width: auto;
+  height: auto;
+  font-size: 18px;
+  font-weight: 700;
+  transform: none;
+  color: #666;
+}
+.wsbb-submenu-icon-plus
+  .wsbb-has-submenu.wsbb-submenu-open
+  > .wsbb-has-submenu-container
+  .wsbb-submenu-toggle::after {
+  content: "−";
+}
+
+/* No icon - hide toggle */
+.wsbb-submenu-icon-none .wsbb-submenu-toggle {
+  display: none;
+}
+.wsbb-submenu-icon-none .wsbb-has-submenu-container {
+  display: block;
+}
+.wsbb-submenu-icon-none .wsbb-has-submenu-container > a {
+  border-radius: 6px;
+}
+
+/* ── Accordion ────────────────────────────────────────── */
+.wsbb-menu-accordion .wsbb-menu-list {
+  flex-direction: column;
+  align-items: stretch;
+}
+.wsbb-menu-accordion .wsbb-menu-list > li {
+  width: 100%;
+  border-bottom: 1px solid #f0f0f0;
+}
+.wsbb-menu-accordion .wsbb-menu-list > li:last-child {
+  border-bottom: none;
+}
+.wsbb-menu-accordion .sub-menu {
+  position: static;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  box-shadow: none;
+  border-radius: 0;
+  border: none;
+  background: #fafafa;
+  padding: 4px 0 4px 20px;
+  margin: 0;
+  display: none !important;
+}
+.wsbb-menu-accordion .sub-menu.wsbb-submenu-open {
+  display: block !important;
+}
+.wsbb-menu-accordion .sub-menu a {
+  border-radius: 0;
+}
+.wsbb-menu-accordion .sub-menu li:first-child a {
+  border-radius: 0;
+}
+.wsbb-menu-accordion .sub-menu li:last-child a {
+  border-radius: 0;
+}
+
+/* ── Separators ───────────────────────────────────────── */
+.wsbb-menu-list.wsbb-has-separators > li:not(:last-child)::after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid #e5e5e5;
+}
+.wsbb-menu--horizontal
+  .wsbb-menu-list.wsbb-has-separators
+  > li:not(:last-child)::after {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  border-bottom: none;
+  border-right: 1px solid #e5e5e5;
+}
+
+/* ── Hamburger toggle ─────────────────────────────────── */
+.wsbb-menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  line-height: 1;
+}
+.wsbb-menu-toggle:hover {
+  background: #eee;
+  border-color: #ccc;
+}
+.wsbb-menu-toggle-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 20px;
+}
+.wsbb-menu-toggle-icon span {
+  display: block;
+  height: 2px;
+  background: #333;
+  border-radius: 2px;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+.wsbb-menu-toggle[aria-expanded="true"]
+  .wsbb-menu-toggle-icon
+  span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.wsbb-menu-toggle[aria-expanded="true"]
+  .wsbb-menu-toggle-icon
+  span:nth-child(2) {
+  opacity: 0;
+}
+.wsbb-menu-toggle[aria-expanded="true"]
+  .wsbb-menu-toggle-icon
+  span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+.wsbb-menu-toggle-label {
+  font-size: 14px;
+}
+
+/* Menu button style */
+.wsbb-menu-toggle--button {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+.wsbb-menu-toggle--button:hover {
+  background: #333;
+  border-color: #333;
+}
+
+/* Hamburger only (no label) */
+.wsbb-menu-toggle--icon {
+  padding: 10px 12px;
+}
+
+/* ── Hamburger always ─────────────────────────────────── */
+.wsbb-menu-hamburger-always .wsbb-menu-toggle {
+  display: inline-flex;
+}
+.wsbb-menu-hamburger-always .wsbb-menu-nav {
+  display: none;
+  padding-top: 8px;
+}
+.wsbb-menu-hamburger-always .wsbb-menu-nav.wsbb-menu--open {
+  display: block;
+}
+.wsbb-menu-hamburger-always .wsbb-menu-list {
+  flex-direction: column;
+  align-items: stretch;
+}
+.wsbb-menu-hamburger-always .wsbb-menu-list > li {
+  width: 100%;
+}
+.wsbb-menu-hamburger-always .sub-menu {
+  position: static;
+  box-shadow: none;
+  border: none;
+  background: #fafafa;
+  padding-left: 20px;
+}
+
+/* ── Mobile responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+  .wsbb-menu-toggle {
+    display: inline-flex;
+  }
+  .wsbb-menu-nav {
     display: none;
-}
-.wsbb-menu--hamburger .wsbb-menu-nav.wsbb-menu--open {
+    padding-top: 12px;
+  }
+  .wsbb-menu-nav.wsbb-menu--open {
     display: block;
-}
-.wsbb-menu--hamburger .wsbb-menu-list {
+  }
+  .wsbb-menu-list {
     flex-direction: column;
-}
-
-/* Vertical layout */
-.wsbb-menu--vertical .wsbb-menu-list .sub-menu {
+    align-items: stretch;
+  }
+  .wsbb-menu-list > li {
+    width: 100%;
+  }
+  .wsbb-menu-nav .sub-menu {
     position: static;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
     box-shadow: none;
+    border: none;
+    background: #fafafa;
+    padding-left: 20px;
+  }
+  .wsbb-menu-nav .sub-menu a {
     border-radius: 0;
-    padding-left: 16px;
+  }
+  .wsbb-menu-nav .sub-menu li:first-child a,
+  .wsbb-menu-nav .sub-menu li:last-child a {
+    border-radius: 0;
+  }
 }
