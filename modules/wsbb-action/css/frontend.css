@@ -1,0 +1,67 @@
+/* WSBB Action Module - Global Styles */
+.wsbb-action-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+}
+
+.wsbb-action-content {
+    flex: 1 1 300px;
+}
+
+.wsbb-action-heading {
+    margin: 0 0 8px;
+}
+
+.wsbb-action-desc {
+    margin: 0 0 16px;
+    line-height: 1.6;
+}
+
+.wsbb-action-btn-wrap {
+    flex: 0 0 auto;
+}
+
+.wsbb-action-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.wsbb-action-btn:hover {
+    opacity: 0.9;
+}
+
+/* Stacked: button below description */
+.wsbb-action-btn-stacked {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.wsbb-action-btn-stacked .wsbb-action-content {
+    flex: none;
+    width: 100%;
+}
+
+.wsbb-action-btn-stacked .wsbb-action-btn-wrap {
+    flex: none;
+}
+
+@media (max-width: 768px) {
+    .wsbb-action-inner {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+    .wsbb-action-content {
+        flex: none;
+        width: 100%;
+    }
+    .wsbb-action-btn-wrap {
+        flex: none;
+    }
+}

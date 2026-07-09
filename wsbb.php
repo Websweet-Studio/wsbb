@@ -33,9 +33,11 @@ function wsbb_load_modules()
   if (class_exists('FLBuilder')) {
     require_once WSBB_MODULES_DIR . 'wsbb-button/wsbb-button.php';
     require_once WSBB_MODULES_DIR . 'wsbb-gallery/wsbb-gallery.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-action/wsbb-action.php';
     require_once WSBB_MODULES_DIR . 'wsbb-heading/wsbb-heading.php';
     require_once WSBB_MODULES_DIR . 'wsbb-html/wsbb-html.php';
     require_once WSBB_MODULES_DIR . 'wsbb-post/wsbb-post.php';
+    require_once WSBB_MODULES_DIR . 'wsbb-pricelist/wsbb-pricelist.php';
     require_once WSBB_MODULES_DIR . 'wsbb-image-carousel/wsbb-image-carousel.php';
     require_once WSBB_MODULES_DIR . 'wsbb-testimoni/wsbb-testimoni.php';
     require_once WSBB_MODULES_DIR . 'wsbb-visual-editor/wsbb-visual-editor.php';

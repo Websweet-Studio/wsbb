@@ -1,0 +1,152 @@
+/* WSBB Pricelist Module - Global Styles */
+.wsbb-pricelist-card {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: box-shadow 0.3s, transform 0.3s;
+    overflow: hidden;
+}
+
+.wsbb-pricelist-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.wsbb-pricelist-card--featured {
+    border-color: #2962ff;
+    box-shadow: 0 4px 20px rgba(41, 98, 255, 0.15);
+}
+
+.wsbb-pricelist-card--featured:hover {
+    box-shadow: 0 12px 36px rgba(41, 98, 255, 0.25);
+}
+
+/* Badge */
+.wsbb-pricelist-badge {
+    position: absolute;
+    top: 12px;
+    right: -28px;
+    transform: rotate(45deg);
+    background: #2962ff;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 40px;
+    line-height: 1.5;
+}
+
+/* Name */
+.wsbb-pricelist-name {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Price */
+.wsbb-pricelist-price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.wsbb-pricelist-currency {
+    font-size: 24px;
+    font-weight: 400;
+    align-self: flex-start;
+    margin-top: 6px;
+}
+
+.wsbb-pricelist-price-amount {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.wsbb-pricelist-period {
+    font-size: 16px;
+    color: #888;
+}
+
+/* Description */
+.wsbb-pricelist-desc {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.wsbb-pricelist-desc p {
+    margin: 0;
+}
+
+/* Features */
+.wsbb-pricelist-features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.wsbb-pricelist-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.4;
+}
+
+.wsbb-pricelist-feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    flex-shrink: 0;
+}
+
+.wsbb-pricelist-feature-icon::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 9px;
+    border: solid #2e7d32;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+/* Button */
+.wsbb-pricelist-btn-wrap {
+    margin-top: 8px;
+}
+
+.wsbb-pricelist-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 12px 24px;
+    border-radius: 6px;
+    background: #2962ff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.wsbb-pricelist-btn:hover {
+    opacity: 0.9;
+}
