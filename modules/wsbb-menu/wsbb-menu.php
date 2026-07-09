@@ -117,7 +117,7 @@ class Wsbb_Menu_Walker extends Walker_Nav_Menu
 }
 
 FLBuilder::register_module('Wsbb_Menu', array(
-    'general' => array(
+    'content' => array(
         'title'    => __('General', 'wsbb'),
         'sections' => array(
             'menu' => array(

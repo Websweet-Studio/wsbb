@@ -1,12 +1,10 @@
 <?php
-$breakpoint = ! empty($settings->mobile_breakpoint) ? intval($settings->mobile_breakpoint) : 768;
-$stack      = ! empty($settings->stack_mobile) ? $settings->stack_mobile : 'yes';
-$layout     = $settings->menu_layout;
-$show_sep   = ! empty($settings->show_separators) && 'yes' === $settings->show_separators;
+$layout   = $settings->menu_layout;
+$show_sep = ! empty($settings->show_separators) && 'yes' === $settings->show_separators;
 
 // Spacing
-$h_spacing = isset($settings->item_spacing) ? intval($settings->item_spacing) : 20;
-$v_spacing = isset($settings->item_spacing_v) ? intval($settings->item_spacing_v) : 8;
+$h_spacing = isset($settings->item_spacing) ? intval($settings->item_spacing) : 0;
+$v_spacing = isset($settings->item_spacing_v) ? intval($settings->item_spacing_v) : 0;
 
 // Alignment
 $align_map = array('left' => 'start', 'center' => 'center', 'right' => 'end');
@@ -194,27 +192,11 @@ display: none;
 <?php endif; ?>
 }
 
-/* ── Mobile ──────────────────────────────────────────── */
-<?php if ('horizontal' === $layout && 'no' !== $stack) : ?>
-  @media ( max-width: <?php echo $breakpoint; ?>px ) {
-  .fl-node-<?php echo $id; ?> .wsbb-menu-toggle { display: inline-flex; }
+/* ── Mobile bg override ──────────────────────────────── */
+<?php if (! empty($settings->mobile_menu_bg)) : ?>
+  @media ( max-width: 768px ) {
   .fl-node-<?php echo $id; ?> .wsbb-menu-nav {
-  display: none;
-  <?php if (! empty($settings->mobile_menu_bg)) : ?>
-    background: <?php echo FLBuilderColor::hex_or_rgb($settings->mobile_menu_bg); ?>;
-  <?php endif; ?>
-  padding: 12px 0;
-  }
-  .fl-node-<?php echo $id; ?> .wsbb-menu-nav.wsbb-menu--open { display: block; }
-  .fl-node-<?php echo $id; ?> .wsbb-menu-list { flex-direction: column; }
-  .fl-node-<?php echo $id; ?> .wsbb-menu-list > li {
-  margin-right: 0 !important;
-  margin-bottom: <?php echo $v_spacing; ?>px;
-  }
-  .fl-node-<?php echo $id; ?> .wsbb-menu-nav .sub-menu {
-  position: static;
-  box-shadow: none;
-  padding-left: 16px;
+  background: <?php echo FLBuilderColor::hex_or_rgb($settings->mobile_menu_bg); ?>;
   }
   }
 <?php endif; ?>

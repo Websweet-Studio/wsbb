@@ -6,8 +6,10 @@
     $(".wsbb-menu-toggle").on("click", function (e) {
       e.stopPropagation();
       var $btn = $(this);
-      var $wrap = $btn.closest(".wsbb-menu-wrap");
-      var $nav = $wrap.find(".wsbb-menu-nav");
+      var $nav = $btn.siblings(".wsbb-menu-nav").first();
+      if (!$nav.length) {
+        $nav = $btn.closest(".wsbb-menu-wrap").find(".wsbb-menu-nav").first();
+      }
       var isOpen = $nav.hasClass("wsbb-menu--open");
 
       if (isOpen) {
