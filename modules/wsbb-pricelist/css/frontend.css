@@ -25,41 +25,222 @@
   box-shadow: none !important;
 }
 
-/* Card style: Borderless */
-.wsbb-pricelist-card--borderless {
-  border: none;
-  background: transparent;
+/* ── Standard ── */
+.wsbb-pricelist-card--standard {
+  border: 1px solid #e0e0e0;
+  background: #fff;
+}
+.wsbb-pricelist-card--standard .wsbb-pricelist-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+.wsbb-pricelist-card--standard .wsbb-pricelist-price-amount {
+  font-size: 48px;
+  font-weight: 700;
+}
+.wsbb-pricelist-card--standard .wsbb-pricelist-feature {
+  padding: 4px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.wsbb-pricelist-card--standard .wsbb-pricelist-feature:last-child {
+  border-bottom: none;
 }
 
-/* Card style: Minimal */
+/* ── Borderless (clean, modern, with top accent) ── */
+.wsbb-pricelist-card--borderless {
+  border: none;
+  background: #fff;
+  padding: 36px 28px 32px;
+  position: relative;
+}
+.wsbb-pricelist-card--borderless::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 4px;
+  border-radius: 0 0 4px 4px;
+  background: #2962ff;
+}
+.wsbb-pricelist-card--borderless:hover {
+  transform: translateY(-2px);
+  box-shadow: none;
+}
+.wsbb-pricelist-card--borderless .wsbb-pricelist-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.wsbb-pricelist-card--borderless .wsbb-pricelist-price-amount {
+  font-size: 42px;
+  font-weight: 800;
+}
+.wsbb-pricelist-card--borderless .wsbb-pricelist-currency {
+  font-weight: 300;
+}
+.wsbb-pricelist-card--borderless .wsbb-pricelist-features {
+  gap: 8px;
+}
+.wsbb-pricelist-card--borderless .wsbb-pricelist-feature {
+  gap: 8px;
+  padding: 0;
+}
+
+/* ── Minimal (soft, airy, pill badges for features) ── */
 .wsbb-pricelist-card--minimal {
   border: none;
-  background: #f8f9fa;
-  border-radius: 12px;
+  background: #f7f8fa;
+  border-radius: 16px;
+  padding: 40px 32px;
+  gap: 18px;
 }
 .wsbb-pricelist-card--minimal:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-name {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 4px;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-price-amount {
+  font-size: 40px;
+  font-weight: 700;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-currency {
+  font-size: 20px;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-period {
+  font-size: 14px;
+  color: #aaa;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-feature-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2962ff;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-feature-icon::after {
+  display: none;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-desc {
+  font-size: 13px;
+}
+.wsbb-pricelist-card--minimal .wsbb-pricelist-btn {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 14px 24px;
 }
 
-/* Card style: Elevated */
+/* ── Elevated (premium, price card with colored price area) ── */
 .wsbb-pricelist-card--elevated {
   border: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 0;
+  overflow: hidden;
 }
 .wsbb-pricelist-card--elevated:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-price-wrap {
+  background: linear-gradient(135deg, #2962ff, #1a237e);
+  color: #fff;
+  padding: 32px 28px 28px;
+  text-align: center;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-name {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.8);
+  margin: 0;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-price {
+  justify-content: center;
+  margin-top: 12px;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-currency {
+  font-size: 28px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.7);
+  margin-top: 2px;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-price-amount {
+  font-size: 56px;
+  font-weight: 800;
+  color: #fff;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-period {
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-body {
+  padding: 24px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #fff;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-feature-icon {
+  background: #e3f2fd;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-feature-icon::after {
+  border-color: #1565c0;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-desc {
+  color: #666;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-btn-wrap {
+  padding: 0 28px 32px;
+  margin: 0;
+  background: #fff;
+}
+.wsbb-pricelist-card--elevated .wsbb-pricelist-btn {
+  border-radius: 50px;
+  padding: 14px 24px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Featured */
 .wsbb-pricelist-card--featured {
-  border-color: #2962ff;
-  box-shadow: 0 4px 20px rgba(41, 98, 255, 0.15);
+    border-color: #2962ff;
+    box-shadow: 0 4px 20px rgba(41, 98, 255, 0.15);
 }
 
 .wsbb-pricelist-card--featured:hover {
-  box-shadow: 0 12px 36px rgba(41, 98, 255, 0.25);
+    box-shadow: 0 12px 36px rgba(41, 98, 255, 0.25);
+}
+
+/* Content alignment */
+.wsbb-pricelist-card--align-center {
+    text-align: center;
+}
+.wsbb-pricelist-card--align-center .wsbb-pricelist-price {
+    justify-content: center;
+}
+.wsbb-pricelist-card--align-center .wsbb-pricelist-features {
+    align-items: center;
+}
+.wsbb-pricelist-card--align-center .wsbb-pricelist-feature {
+    justify-content: center;
+}
+
+.wsbb-pricelist-card--align-right {
+    text-align: right;
+}
+.wsbb-pricelist-card--align-right .wsbb-pricelist-price {
+    justify-content: flex-end;
 }
 
 /* Badge */
