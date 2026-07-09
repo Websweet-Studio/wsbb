@@ -46,6 +46,17 @@ function wsbb_load_modules()
 }
 add_action('init', 'wsbb_load_modules', 99);
 
+/**
+ * Load Beaver Themer functionality.
+ */
+function wsbb_load_themer() {
+  if ( class_exists( 'FLBuilder' ) ) {
+    require_once WSBB_PLUGIN_DIR . 'themer/class-wsbb-themer.php';
+    Wsbb_Themer::init();
+  }
+}
+add_action( 'init', 'wsbb_load_themer', 100 );
+
 function activate_wsbb()
 {
   require_once plugin_dir_path(__FILE__) . 'includes/class-wsbb-activator.php';
