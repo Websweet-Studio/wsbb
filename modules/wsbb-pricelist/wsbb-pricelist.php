@@ -60,6 +60,15 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
                             'selector' => '.wsbb-pricelist-currency',
                         ),
                     ),
+                    'currency_position' => array(
+                        'type'    => 'select',
+                        'label'   => __('Currency Position', 'wsbb'),
+                        'default' => 'prefix',
+                        'options' => array(
+                            'prefix' => __('Before price ($29)', 'wsbb'),
+                            'suffix' => __('After price (29$)', 'wsbb'),
+                        ),
+                    ),
                     'period'    => array(
                         'type'    => 'text',
                         'label'   => __('Period', 'wsbb'),
@@ -209,6 +218,13 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
                             'selector' => '.wsbb-pricelist-feature-icon::after',
                             'property' => 'border-color',
                         ),
+                    ),
+                    'highlight_bg_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Featured Card Accent Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'help'       => __('Overrides button bg color for featured card border/badge.', 'wsbb'),
                     ),
                 ),
             ),

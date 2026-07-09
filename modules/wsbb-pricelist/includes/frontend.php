@@ -10,6 +10,8 @@ $btn_size       = ! empty($settings->btn_size_preset) ? $settings->btn_size_pres
 $btn_full       = ! empty($settings->btn_full_width) && 'yes' === $settings->btn_full_width;
 $show_shadow    = ! empty($settings->show_shadow) ? $settings->show_shadow : 'yes';
 $content_align  = ! empty($settings->content_align) ? $settings->content_align : 'left';
+$currency_pos   = ! empty($settings->currency_position) ? $settings->currency_position : 'prefix';
+$currency_html  = ! empty($settings->currency) ? '<span class="wsbb-pricelist-currency">' . esc_html($settings->currency) . '</span>' : '';
 
 $card_class  = 'wsbb-pricelist-card';
 $card_class .= ' wsbb-pricelist-card--' . $card_style;
@@ -38,10 +40,9 @@ $is_elevated = ('elevated' === $card_style);
                 <h3 class="wsbb-pricelist-name"><?php echo esc_html( $settings->plan_name ); ?></h3>
             <?php endif; ?>
             <div class="wsbb-pricelist-price">
-                <?php if ( ! empty( $settings->currency ) ) : ?>
-                    <span class="wsbb-pricelist-currency"><?php echo esc_html( $settings->currency ); ?></span>
-                <?php endif; ?>
+                <?php if ( 'prefix' === $currency_pos ) echo $currency_html; ?>
                 <span class="wsbb-pricelist-price-amount"><?php echo esc_html( $settings->price ); ?></span>
+                <?php if ( 'suffix' === $currency_pos ) echo $currency_html; ?>
                 <?php if ( ! empty( $settings->period ) ) : ?>
                     <span class="wsbb-pricelist-period"><?php echo esc_html( $settings->period ); ?></span>
                 <?php endif; ?>
@@ -55,10 +56,9 @@ $is_elevated = ('elevated' === $card_style);
                 <h3 class="wsbb-pricelist-name"><?php echo esc_html( $settings->plan_name ); ?></h3>
             <?php endif; ?>
             <div class="wsbb-pricelist-price">
-                <?php if ( ! empty( $settings->currency ) ) : ?>
-                    <span class="wsbb-pricelist-currency"><?php echo esc_html( $settings->currency ); ?></span>
-                <?php endif; ?>
+                <?php if ( 'prefix' === $currency_pos ) echo $currency_html; ?>
                 <span class="wsbb-pricelist-price-amount"><?php echo esc_html( $settings->price ); ?></span>
+                <?php if ( 'suffix' === $currency_pos ) echo $currency_html; ?>
                 <?php if ( ! empty( $settings->period ) ) : ?>
                     <span class="wsbb-pricelist-period"><?php echo esc_html( $settings->period ); ?></span>
                 <?php endif; ?>

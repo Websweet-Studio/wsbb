@@ -78,3 +78,15 @@
 .wsbb-animate--zoom-in.wsbb-visible {
   animation-name: wsbb-zoom-in;
 }
+
+/* ── Button Hover Keyframes ────────────────────────────── */
+@keyframes wsbb-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+@keyframes wsbb-shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}

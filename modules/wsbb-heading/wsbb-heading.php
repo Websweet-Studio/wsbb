@@ -55,6 +55,19 @@ FLBuilder::register_module('Wsbb_Heading', array(
                             'h6' => 'H6',
                         ),
                     ),
+                    'heading_link' => array(
+                        'type'  => 'link',
+                        'label' => __('Link URL', 'wsbb'),
+                    ),
+                    'heading_link_target' => array(
+                        'type'    => 'select',
+                        'label'   => __('Link Target', 'wsbb'),
+                        'default' => '_self',
+                        'options' => array(
+                            '_self'  => __('Same Tab', 'wsbb'),
+                            '_blank' => __('New Tab', 'wsbb'),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -157,6 +170,18 @@ FLBuilder::register_module('Wsbb_Heading', array(
                             'property' => 'letter-spacing',
                         ),
                     ),
+                    'text_shadow_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Text Shadow Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'text_shadow_blur' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Text Shadow Blur', 'wsbb'),
+                        'default'     => '2',
+                        'description' => 'px',
+                    ),
                 ),
             ),
             'box' => array(
@@ -181,6 +206,16 @@ FLBuilder::register_module('Wsbb_Heading', array(
                             'type'     => 'css',
                             'selector' => '.wsbb-heading-wrap',
                             'property' => 'padding',
+                        ),
+                    ),
+                    'margin' => array(
+                        'type'        => 'dimension',
+                        'label'       => __('Margin', 'wsbb'),
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-heading-wrap',
+                            'property' => 'margin',
                         ),
                     ),
                     'border_radius' => array(

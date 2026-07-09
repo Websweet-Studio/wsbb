@@ -291,6 +291,28 @@ FLBuilder::register_module('Wsbb_Image_Carousel', array(
                             'fill'      => __('Fill', 'wsbb'),
                         ),
                     ),
+                    'arrow_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Arrow Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'arrow_bg_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Arrow Background', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'dot_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Dot Color', 'wsbb'),
+                        'show_reset' => true,
+                    ),
+                    'dot_active_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Dot Active Color', 'wsbb'),
+                        'show_reset' => true,
+                    ),
                 ),
             ),
         ),

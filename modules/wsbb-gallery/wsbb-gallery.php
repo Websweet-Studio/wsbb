@@ -123,6 +123,20 @@ FLBuilder::register_module('Wsbb_Gallery', array(
                             'none'  => __('None', 'wsbb'),
                         ),
                     ),
+                    'caption_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Caption Font Size', 'wsbb'),
+                        'default'     => '14',
+                        'description' => 'px',
+                    ),
+                    'caption_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Caption Font', 'wsbb'),
+                        'default' => array(
+                            'family' => 'Default',
+                            'weight' => '400',
+                        ),
+                    ),
                 ),
             ),
             'grid' => array(
@@ -162,9 +176,10 @@ FLBuilder::register_module('Wsbb_Gallery', array(
                         ),
                     ),
                     'gap' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Gap', 'wsbb'),
-                        'default'     => '10',
+                        'type'       => 'unit',
+                        'label'      => __('Gap', 'wsbb'),
+                        'default'    => '10',
+                        'responsive' => true,
                         'description' => 'px',
                     ),
                 ),
@@ -185,6 +200,13 @@ FLBuilder::register_module('Wsbb_Gallery', array(
                             'yes' => __('Yes', 'wsbb'),
                             'no'  => __('No', 'wsbb'),
                         ),
+                    ),
+                    'lightbox_overlay_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Overlay Background', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'help'       => __('Lightbox overlay background color.', 'wsbb'),
                     ),
                 ),
             ),

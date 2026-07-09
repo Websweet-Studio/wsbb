@@ -89,6 +89,22 @@ class Wsbb_Post extends FLBuilderModule
             }
         }
 
+        // Sticky posts
+        if (!empty($settings->sticky_behavior)) {
+            if ('exclude' === $settings->sticky_behavior) {
+                $args['ignore_sticky_posts'] = 1;
+                $sticky = get_option('sticky_posts');
+                if (!empty($sticky)) {
+                    $args['post__not_in'] = array_merge(
+                        isset($args['post__not_in']) ? $args['post__not_in'] : array(),
+                        $sticky
+                    );
+                }
+            } elseif ('ignore' === $settings->sticky_behavior) {
+                $args['ignore_sticky_posts'] = 1;
+            }
+        }
+
         // Author filter
         if (!empty($settings->author_type) && $settings->author_type !== 'all') {
             if ($settings->author_type === 'current') {
@@ -435,6 +451,16 @@ FLBuilder::register_module('Wsbb_Post', array(
                             'yes' => __('Yes', 'wsbb'),
                         ),
                         'help'    => __('Exclude the currently viewed post from results.', 'wsbb'),
+                    ),
+                    'sticky_behavior' => array(
+                        'type'    => 'select',
+                        'label'   => __('Sticky Posts', 'wsbb'),
+                        'default' => 'default',
+                        'options' => array(
+                            'default' => __('Default (appear first)', 'wsbb'),
+                            'exclude' => __('Exclude stiky posts', 'wsbb'),
+                            'ignore'  => __('Ignore sticky status', 'wsbb'),
+                        ),
                     ),
                 ),
             ),
@@ -807,6 +833,13 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'default' => 'yes',
                         'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
+                    'date_format' => array(
+                        'type'    => 'text',
+                        'label'   => __('Date Format', 'wsbb'),
+                        'default' => '',
+                        'placeholder' => get_option('date_format'),
+                        'help'    => __('PHP date format. Leave empty for site default.', 'wsbb'),
+                    ),
                     'show_author' => array(
                         'type'    => 'select',
                         'label'   => __('Show Author', 'wsbb'),
@@ -1087,6 +1120,7 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'options' => array(
                             'numbers'   => __('Numbers', 'wsbb'),
                             'prev_next' => __('Prev / Next', 'wsbb'),
+                            'load_more' => __('Load More (AJAX)', 'wsbb'),
                         ),
                     ),
                     'pagination_align' => array(

@@ -257,3 +257,25 @@
   color: #888;
   padding: 30px;
 }
+
+/* ── Load More Button ──────────────────────────────────── */
+.wsbb-load-more-btn {
+  display: inline-block;
+  padding: 10px 28px;
+  border: 2px solid #2962ff;
+  background: transparent;
+  color: #2962ff;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.wsbb-load-more-btn:hover {
+  background: #2962ff;
+  color: #fff;
+}
+.wsbb-load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

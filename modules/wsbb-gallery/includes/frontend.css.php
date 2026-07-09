@@ -1,9 +1,8 @@
 <?php
 // Instance-specific CSS
 ?>
-
-/* ── Grid columns ─────────────────────────────────────── */
 <?php if ( ! empty( $settings->columns ) ) : ?>
+/* ── Grid columns ─────────────────────────────────────── */
 .fl-node-<?php echo $id; ?> .wsbb-gallery-grid {
     --wsbb-cols: <?php echo intval( $settings->columns ); ?>;
 }
@@ -25,9 +24,24 @@
 }
 <?php endif; ?>
 
+/* ── Gap ───────────────────────────────────────────────── */
 <?php if ( ! empty( $settings->gap ) ) : ?>
 .fl-node-<?php echo $id; ?> .wsbb-gallery-grid {
     gap: <?php echo intval( $settings->gap ); ?>px;
+}
+<?php endif; ?>
+<?php if ( ! empty( $settings->gap_medium ) ) : ?>
+@media ( max-width: 992px ) {
+    .fl-node-<?php echo $id; ?> .wsbb-gallery-grid {
+        gap: <?php echo intval( $settings->gap_medium ); ?>px;
+    }
+}
+<?php endif; ?>
+<?php if ( ! empty( $settings->gap_responsive ) ) : ?>
+@media ( max-width: 600px ) {
+    .fl-node-<?php echo $id; ?> .wsbb-gallery-grid {
+        gap: <?php echo intval( $settings->gap_responsive ); ?>px;
+    }
 }
 <?php endif; ?>
 
@@ -92,6 +106,28 @@
     padding: <?php echo esc_attr( $settings->padding ); ?>;
 <?php endif; ?>
 <?php if ( ! empty( $settings->caption_color ) ) : ?>
-    color: <?php echo FLBuilderColor::hex_or_rgb( $settings->caption_color ); ?>;
+    --wsbb-caption-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->caption_color ); ?>;
 <?php endif; ?>
 }
+
+/* ── Caption typography ────────────────────────────────── */
+<?php if ( ! empty( $settings->caption_size ) || ! empty( $settings->caption_font ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-gallery-caption {
+<?php if ( ! empty( $settings->caption_size ) ) : ?>
+    font-size: <?php echo intval( $settings->caption_size ); ?>px;
+<?php endif; ?>
+<?php if ( ! empty( $settings->caption_font['family'] ) && 'Default' !== $settings->caption_font['family'] ) : ?>
+    font-family: <?php echo esc_attr( $settings->caption_font['family'] ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->caption_font['weight'] ) ) : ?>
+    font-weight: <?php echo esc_attr( $settings->caption_font['weight'] ); ?>;
+<?php endif; ?>
+}
+<?php endif; ?>
+
+/* ── Lightbox overlay ──────────────────────────────────── */
+<?php if ( ! empty( $settings->lightbox_overlay_color ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-gallery-lightbox {
+    background: <?php echo FLBuilderColor::hex_or_rgb( $settings->lightbox_overlay_color ); ?>;
+}
+<?php endif; ?>

@@ -68,7 +68,10 @@ $image_size = isset($settings->image_size) ? $settings->image_size : 'medium_lar
                     <?php if ((isset($settings->show_date) && $settings->show_date === 'yes') || (isset($settings->show_author) && $settings->show_author === 'yes')) : ?>
                       <div class="wsbb-post-meta">
                         <?php if (isset($settings->show_date) && $settings->show_date === 'yes') : ?>
-                          <span class="wsbb-post-date"><?php echo get_the_date(); ?></span>
+                          <span class="wsbb-post-date"><?php
+                                                        $df = !empty($settings->date_format) ? $settings->date_format : '';
+                                                        echo $df ? get_the_date($df) : get_the_date();
+                                                        ?></span>
                         <?php endif; ?>
                         <?php if (isset($settings->show_author) && $settings->show_author === 'yes') : ?>
                           <span class="wsbb-post-author"><?php the_author(); ?></span>
@@ -127,7 +130,26 @@ $image_size = isset($settings->image_size) ? $settings->image_size : 'medium_lar
     <?php if (isset($settings->enable_pagination) && $settings->enable_pagination === 'yes' && $total_pages > 1) : ?>
       <div class="wsbb-post-pagination">
         <?php if ($query_source !== 'main') : ?>
-          <?php if (isset($settings->pagination_type) && $settings->pagination_type === 'prev_next') : ?>
+          <?php if (isset($settings->pagination_type) && $settings->pagination_type === 'load_more') : ?>
+            <?php
+            $big = 999999999;
+            // Hidden pagination links for SEO + JS to find next URLs
+            echo '<div style="display:none;">';
+            echo paginate_links(array(
+              'base'    => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+              'format'  => '?paged=%#%',
+              'current' => max(1, $paged),
+              'total'   => $total_pages,
+              'type'    => 'list',
+              'prev_text' => '‹',
+              'next_text' => '›',
+            ));
+            echo '</div>';
+            ?>
+            <button class="wsbb-load-more-btn" data-page="1" data-total="<?php echo esc_attr($total_pages); ?>">
+              <?php _e('Load More', 'wsbb'); ?>
+            </button>
+          <?php elseif (isset($settings->pagination_type) && $settings->pagination_type === 'prev_next') : ?>
             <?php
             $big = 999999999;
             echo paginate_links(array(

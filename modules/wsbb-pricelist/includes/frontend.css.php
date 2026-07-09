@@ -1,63 +1,12 @@
 <?php
 // Instance-specific CSS
-$selector    = ".fl-node-$id .wsbb-pricelist-card";
-$btn_style   = ! empty( $settings->btn_style ) ? $settings->btn_style : 'filled';
-$card_style  = ! empty( $settings->card_style ) ? $settings->card_style : 'standard';
+$selector   = ".fl-node-$id .wsbb-pricelist-card";
+$card_style = ! empty( $settings->card_style ) ? $settings->card_style : 'standard';
 
-// ── Button colors ───────────────────────────────────────
-$btn_bg            = ! empty( $settings->btn_bg_color ) ? FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ) : '#2962ff';
-$btn_text          = ! empty( $settings->btn_text_color ) ? FLBuilderColor::hex_or_rgb( $settings->btn_text_color ) : '#ffffff';
-$btn_bg_hover      = ! empty( $settings->btn_bg_hover ) ? FLBuilderColor::hex_or_rgb( $settings->btn_bg_hover ) : '';
-$btn_text_hover    = ! empty( $settings->btn_text_hover ) ? FLBuilderColor::hex_or_rgb( $settings->btn_text_hover ) : '';
-
-$btn_border_radius = isset( $settings->btn_border_radius ) ? intval( $settings->btn_border_radius ) : 6;
-$btn_border_width  = isset( $settings->btn_border_width ) ? intval( $settings->btn_border_width ) : 2;
-$btn_border_color  = ! empty( $settings->btn_border_color ) ? FLBuilderColor::hex_or_rgb( $settings->btn_border_color ) : '';
-$btn_border_hover  = ! empty( $settings->btn_border_hover_color ) ? FLBuilderColor::hex_or_rgb( $settings->btn_border_hover_color ) : '';
-
-$btn_size_preset   = isset( $settings->btn_size_preset ) ? $settings->btn_size_preset : 'custom';
-if ( 'custom' === $btn_size_preset ) {
-    $pad_h     = isset( $settings->btn_padding_h ) ? intval( $settings->btn_padding_h ) : 24;
-    $pad_v     = isset( $settings->btn_padding_v ) ? intval( $settings->btn_padding_v ) : 12;
-    $font_size = isset( $settings->btn_font_size ) ? intval( $settings->btn_font_size ) : 15;
-} else {
-    $presets = array(
-        'small'  => array( 'pad_h' => 16, 'pad_v' => 8,  'font_size' => 13 ),
-        'medium' => array( 'pad_h' => 24, 'pad_v' => 12, 'font_size' => 15 ),
-        'large'  => array( 'pad_h' => 36, 'pad_v' => 16, 'font_size' => 18 ),
-    );
-    $p        = $presets[ $btn_size_preset ];
-    $pad_h    = $p['pad_h'];
-    $pad_v    = $p['pad_v'];
-    $font_size = $p['font_size'];
-}
-
-$font_weight     = isset( $settings->btn_font_weight ) ? intval( $settings->btn_font_weight ) : 600;
-$letter_spacing  = isset( $settings->btn_letter_spacing ) ? floatval( $settings->btn_letter_spacing ) : 0;
-$show_shadow     = isset( $settings->btn_box_shadow ) ? $settings->btn_box_shadow : 'no';
-$shadow_hover    = isset( $settings->btn_shadow_hover ) ? $settings->btn_shadow_hover : 'no';
-
-// ── Style-specific overrides ──────────────────────────
-// Outlined: fallback border_color ke bg_color
-if ( 'outlined' === $btn_style && empty( $btn_border_color ) ) {
-    $btn_border_color = $btn_bg;
-}
-// Outlined: text color selalu ikut border
-if ( 'outlined' === $btn_style ) {
-    $btn_text = $btn_border_color;
-}
-// Ghost: text_color pakai bg_color
-if ( 'ghost' === $btn_style ) {
-    $btn_text = $btn_bg;
-}
-// Ghost: fallback bg_hover ke bg_color
-if ( 'ghost' === $btn_style && empty( $btn_bg_hover ) ) {
-    $btn_bg_hover = $btn_bg;
-}
-// Ghost: hover text jadi putih biar kontras
-if ( 'ghost' === $btn_style && empty( $btn_text_hover ) ) {
-    $btn_text_hover = '#ffffff';
-}
+// ── Button via shared helper ─────────────────────────────
+include_once WSBB_PLUGIN_DIR . 'includes/button-style-helpers.php';
+$btn = wsbb_get_button_vars($settings, 'btn_');
+extract($btn);
 ?>
 
 /* Card background & border */
@@ -182,11 +131,17 @@ if ( $period_size > 0 ) :
 }
 
 /* Featured accent */
-<?php if ( 'yes' === $settings->featured && ! empty( $settings->btn_bg_color ) ) : ?>
+<?php if ( 'yes' === $settings->featured ) :
+    $accent_color = ! empty( $settings->highlight_bg_color ) ? FLBuilderColor::hex_or_rgb( $settings->highlight_bg_color ) : '';
+    if ( empty( $accent_color ) && ! empty( $settings->btn_bg_color ) ) {
+        $accent_color = FLBuilderColor::hex_or_rgb( $settings->btn_bg_color );
+    }
+    if ( ! empty( $accent_color ) ) :
+?>
 .fl-node-<?php echo $id; ?> .wsbb-pricelist-card--featured {
-    border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ); ?>;
+    border-color: <?php echo $accent_color; ?>;
 }
 .fl-node-<?php echo $id; ?> .wsbb-pricelist-badge {
-    background: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ); ?>;
+    background: <?php echo $accent_color; ?>;
 }
-<?php endif; ?>
+<?php endif; endif; ?>
