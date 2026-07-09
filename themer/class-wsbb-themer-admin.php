@@ -24,6 +24,178 @@ final class Wsbb_Themer_Admin
 	}
 
 	/**
+	 * Render WSBB main admin page.
+	 *
+	 * @since 1.0
+	 * @return void
+	 */
+	static public function render_main_page()
+	{
+		$all_layouts = get_posts(array(
+			'post_type'      => 'wsbb-themer-layout',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		));
+
+		$counts = array(
+			'total'    => count($all_layouts),
+			'header'   => 0,
+			'footer'   => 0,
+			'singular' => 0,
+			'archive'  => 0,
+			'404'      => 0,
+		);
+
+		foreach ($all_layouts as $layout) {
+			$type = get_post_meta($layout->ID, '_wsbb_layout_type', true);
+			if (isset($counts[$type])) {
+				$counts[$type]++;
+			}
+		}
+
+		$recent     = array_slice($all_layouts, 0, 5);
+		$bb_version = defined('FL_BUILDER_VERSION') ? FL_BUILDER_VERSION : '-';
+		$bb_type    = defined('FL_BUILDER_LITE') && FL_BUILDER_LITE ? 'Lite' : 'Pro';
+		$labels     = self::get_location_labels();
+
+		$module_count = 0;
+		$module_dir   = WP_PLUGIN_DIR . '/wsbb/modules/';
+		if (is_dir($module_dir)) {
+			$module_count = count(glob($module_dir . 'wsbb-*', GLOB_ONLYDIR));
+		}
+
+		// Pinterest-style CSS
+		$css = '
+.wsbb-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+.wsbb-stat-card{background:#fff;border-radius:16px;padding:24px;display:flex;align-items:center;gap:16px}
+.wsbb-stat-icon{width:48px;height:48px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wsbb-stat-icon .dashicons{font-size:22px;width:22px;height:22px}
+.wsbb-stat-icon--total{background:#f6f6f3;color:#000}
+.wsbb-stat-icon--header{background:#ffe6e8;color:#cc001f}
+.wsbb-stat-icon--footer{background:#f6f6f3;color:#62625b}
+.wsbb-stat-icon--singular{background:#f6f6f3;color:#211922}
+.wsbb-stat-icon--archive{background:#f6f6f3;color:#33332e}
+.wsbb-stat-icon--404{background:#ffe6e8;color:#9e0a0a}
+.wsbb-stat-num{font-size:28px;font-weight:700;line-height:1.2;color:#000}
+.wsbb-stat-label{font-size:14px;font-weight:600;color:#62625b}
+.wsbb-sec-title{font-size:18px;font-weight:600;line-height:1.3;color:#000;margin:0 0 16px}
+.wsbb-actions{display:flex;gap:8px;margin-bottom:32px}
+.wsbb-btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 20px;border-radius:16px;font-size:14px;font-weight:700;line-height:1;text-decoration:none;border:none;cursor:pointer;transition:background .15s;box-sizing:border-box}
+.wsbb-btn-primary{background:#e60023;color:#fff}
+.wsbb-btn-primary:hover,.wsbb-btn-primary:focus{background:#cc001f;color:#fff}
+.wsbb-btn-secondary{background:#e5e5e0;color:#000}
+.wsbb-btn-secondary:hover,.wsbb-btn-secondary:focus{background:#c8c8c1;color:#000}
+.wsbb-table-wrap{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:32px}
+.wsbb-table{width:100%;border-collapse:collapse}
+.wsbb-table th{font-size:14px;font-weight:700;color:#000;text-align:left;padding:12px 20px;border-bottom:1px solid #dadad3}
+.wsbb-table td{font-size:16px;color:#33332e;padding:14px 20px;border-bottom:1px solid #e5e5e0}
+.wsbb-table tr:last-child td{border-bottom:none}
+.wsbb-table a{color:#211922;font-weight:600;text-decoration:none}
+.wsbb-table a:hover{color:#e60023}
+.wsbb-badge{display:inline-block;padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:700;white-space:nowrap}
+.wsbb-badge-header{background:#f6f6f3;color:#000}
+.wsbb-badge-footer{background:#f6f6f3;color:#62625b}
+.wsbb-badge-singular{background:#f6f6f3;color:#211922}
+.wsbb-badge-archive{background:#f6f6f3;color:#33332e}
+.wsbb-badge-404{background:#ffe6e8;color:#9e0a0a}
+.wsbb-info-list{background:#fff;border-radius:16px;padding:4px 0;max-width:560px;margin-bottom:32px}
+.wsbb-info-item{display:flex;padding:12px 24px;border-bottom:1px solid #e5e5e0}
+.wsbb-info-item:last-child{border-bottom:none}
+.wsbb-info-label{width:180px;font-size:14px;font-weight:600;color:#000;flex-shrink:0}
+.wsbb-info-value{font-size:14px;color:#33332e}
+.wsbb-empty{background:#fff;border-radius:16px;padding:48px 24px;text-align:center;color:#62625b;font-size:16px;margin-bottom:32px}
+@media(max-width:1200px){.wsbb-stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:782px){.wsbb-stats-grid{grid-template-columns:1fr}}
+';
+		echo '<style>' . $css . '</style>';
+
+		echo '<div class="wrap">';
+		echo '<div class="wsbb-header" style="margin-bottom:32px">';
+		echo '<h1 style="font-size:28px;font-weight:700;line-height:1.2;color:#000;margin:0 0 4px">WSBB Dashboard</h1>';
+		echo '<p style="font-size:16px;color:#62625b;margin:0">' . esc_html__('Beaver Builder Themer Layouts', 'wsbb') . '</p>';
+		echo '</div>';
+
+		// Stats cards
+		$card_types = array(
+			'total'    => array('dashicons-admin-site',     'wsbb-stat-icon--total',    __('Total Layouts', 'wsbb')),
+			'header'   => array('dashicons-arrow-up-alt',   'wsbb-stat-icon--header',   __('Header', 'wsbb')),
+			'footer'   => array('dashicons-arrow-down-alt', 'wsbb-stat-icon--footer',   __('Footer', 'wsbb')),
+			'singular' => array('dashicons-admin-post',     'wsbb-stat-icon--singular', __('Singular', 'wsbb')),
+			'archive'  => array('dashicons-category',       'wsbb-stat-icon--archive',  __('Archive', 'wsbb')),
+			'404'      => array('dashicons-warning',        'wsbb-stat-icon--404',      __('404 Page', 'wsbb')),
+		);
+
+		echo '<div class="wsbb-stats-grid">';
+		foreach ($card_types as $type_key => $card) {
+			echo '<div class="wsbb-stat-card">';
+			echo '<div class="wsbb-stat-icon ' . esc_attr($card[1]) . '"><span class="dashicons ' . esc_attr($card[0]) . '"></span></div>';
+			echo '<div>';
+			echo '<div class="wsbb-stat-num">' . (int) $counts[$type_key] . '</div>';
+			echo '<div class="wsbb-stat-label">' . esc_html($card[2]) . '</div>';
+			echo '</div>';
+			echo '</div>';
+		}
+		echo '</div>';
+
+		// Quick actions
+		$new_url = admin_url('post-new.php?post_type=wsbb-themer-layout');
+		$all_url = admin_url('edit.php?post_type=wsbb-themer-layout');
+		echo '<div class="wsbb-actions">';
+		echo '<a href="' . esc_url($new_url) . '" class="wsbb-btn wsbb-btn-primary">' . esc_html__('Add New Layout', 'wsbb') . '</a>';
+		echo '<a href="' . esc_url($all_url) . '" class="wsbb-btn wsbb-btn-secondary">' . esc_html__('View All Layouts', 'wsbb') . '</a>';
+		echo '</div>';
+
+		// Recent layouts
+		echo '<h2 class="wsbb-sec-title">' . esc_html__('Recent Layouts', 'wsbb') . '</h2>';
+		if (empty($recent)) {
+			echo '<div class="wsbb-empty">' . esc_html__('No layouts yet. Create your first one!', 'wsbb') . '</div>';
+		} else {
+			echo '<div class="wsbb-table-wrap"><table class="wsbb-table">';
+			echo '<thead><tr>';
+			echo '<th>' . esc_html__('Title', 'wsbb') . '</th>';
+			echo '<th>' . esc_html__('Type', 'wsbb') . '</th>';
+			echo '<th>' . esc_html__('Locations', 'wsbb') . '</th>';
+			echo '<th>' . esc_html__('Date', 'wsbb') . '</th>';
+			echo '</tr></thead><tbody>';
+
+			foreach ($recent as $layout) {
+				$type      = get_post_meta($layout->ID, '_wsbb_layout_type', true);
+				$locations = get_post_meta($layout->ID, '_wsbb_locations', true);
+				$edit_link = get_edit_post_link($layout->ID);
+
+				$loc_labels = array();
+				if (is_array($locations)) {
+					foreach ($locations as $loc) {
+						$loc_labels[] = isset($labels[$loc]) ? $labels[$loc] : $loc;
+					}
+				}
+
+				echo '<tr>';
+				echo '<td><a href="' . esc_url($edit_link) . '">' . esc_html($layout->post_title) . '</a></td>';
+				echo '<td><span class="wsbb-badge wsbb-badge-' . esc_attr($type) . '">' . esc_html(ucfirst($type ?: '-')) . '</span></td>';
+				echo '<td>' . esc_html(implode(', ', $loc_labels) ?: '-') . '</td>';
+				echo '<td>' . esc_html(get_the_date('Y-m-d', $layout)) . '</td>';
+				echo '</tr>';
+			}
+			echo '</tbody></table></div>';
+		}
+
+		// System info
+		echo '<h2 class="wsbb-sec-title">' . esc_html__('System Info', 'wsbb') . '</h2>';
+		echo '<div class="wsbb-info-list">';
+		echo '<div class="wsbb-info-item"><span class="wsbb-info-label">WSBB Version</span><span class="wsbb-info-value">' . esc_html(WSBB_VERSION) . '</span></div>';
+		echo '<div class="wsbb-info-item"><span class="wsbb-info-label">Beaver Builder</span><span class="wsbb-info-value">' . esc_html($bb_type . ' ' . $bb_version) . '</span></div>';
+		echo '<div class="wsbb-info-item"><span class="wsbb-info-label">' . esc_html__('Modules Loaded', 'wsbb') . '</span><span class="wsbb-info-value">' . (int) $module_count . '</span></div>';
+		echo '<div class="wsbb-info-item"><span class="wsbb-info-label">Themer CPT</span><span class="wsbb-info-value">' . (post_type_exists('wsbb-themer-layout') ? esc_html__('Registered', 'wsbb') : esc_html__('Not registered', 'wsbb')) . '</span></div>';
+		echo '</div>';
+
+		echo '</div>';
+	}
+
+	/**
 	 * Add admin menu page.
 	 *
 	 * @since 1.0
@@ -32,13 +204,22 @@ final class Wsbb_Themer_Admin
 	static public function add_admin_menu()
 	{
 		add_menu_page(
-			__('WSBB Themer', 'wsbb'),
-			__('WSBB Themer', 'wsbb'),
-			'edit_posts',
-			'edit.php?post_type=wsbb-themer-layout',
-			'',
-			'dashicons-welcome-widgets-menus',
+			'WSBB',
+			'WSBB',
+			'read',
+			'wsbb-menu',
+			__CLASS__ . '::render_main_page',
+			'dashicons-admin-generic',
 			30
+		);
+
+		add_submenu_page(
+			'wsbb-menu',
+			__('WSBB Themer', 'wsbb'),
+			__('WSBB Themer', 'wsbb'),
+			'read',
+			'edit.php?post_type=wsbb-themer-layout',
+			''
 		);
 	}
 

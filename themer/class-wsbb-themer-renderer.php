@@ -20,12 +20,27 @@ final class Wsbb_Themer_Renderer {
 	}
 
 	/**
+	 * Check if current page is a themer layout (being edited or previewed).
+	 *
+	 * @since 1.0
+	 * @return bool
+	 */
+	static private function is_editing_layout() {
+		return 'wsbb-themer-layout' === get_post_type();
+	}
+
+	/**
 	 * Setup header and footer hooks.
 	 *
 	 * @since 1.0
 	 * @return void
 	 */
 	static public function setup_header_footer() {
+		// Don't apply themer on the layout's own page (prevents self-replacement).
+		if ( self::is_editing_layout() ) {
+			return;
+		}
+
 		$header = Wsbb_Themer_Rules::get_matching_header();
 		$footer = Wsbb_Themer_Rules::get_matching_footer();
 
@@ -69,7 +84,7 @@ final class Wsbb_Themer_Renderer {
 		}
 
 		// Don't override if we're on a themer layout page being edited.
-		if ( 'wsbb-themer-layout' === get_post_type() ) {
+		if ( self::is_editing_layout() ) {
 			return $template;
 		}
 
@@ -155,6 +170,11 @@ final class Wsbb_Themer_Renderer {
 	 * @return array
 	 */
 	static public function body_class( $classes ) {
+		// Don't add themer body classes on layout edit/preview pages.
+		if ( self::is_editing_layout() ) {
+			return $classes;
+		}
+
 		$header = Wsbb_Themer_Rules::get_matching_header();
 		$footer = Wsbb_Themer_Rules::get_matching_footer();
 		$ids    = Wsbb_Themer_Rules::get_current_page_content_ids();
