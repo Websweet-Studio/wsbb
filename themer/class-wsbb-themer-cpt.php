@@ -14,7 +14,10 @@ final class Wsbb_Themer_Cpt {
 	 * @return void
 	 */
 	static public function init() {
-		add_action( 'init', __CLASS__ . '::register_post_type' );
+		// Register CPT langsung — file di-load saat init:100, jadi
+		// add_action('init', ...) sudah terlambat untuk priority 10.
+		self::register_post_type();
+
 		add_filter( 'fl_builder_post_types', __CLASS__ . '::enable_builder' );
 	}
 
