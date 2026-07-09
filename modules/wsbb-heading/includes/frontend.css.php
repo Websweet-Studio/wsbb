@@ -1,10 +1,9 @@
 <?php
 // Instance-specific CSS
-
 $selector = ".fl-node-$id .wsbb-heading-text";
 ?>
 
-.fl-node-<?php echo $id; ?> .wsbb-heading-text {
+<?php echo $selector; ?> {
 <?php if ( ! empty( $settings->text_color ) ) : ?>
     color: <?php echo FLBuilderColor::hex_or_rgb( $settings->text_color ); ?>;
 <?php endif; ?>
@@ -37,5 +36,18 @@ if ( ! empty( $settings->heading_font ) && ! empty( $settings->heading_font['fam
 if ( ! empty( $settings->heading_font ) && ! empty( $settings->heading_font['weight'] ) ) :
 ?>
     font-weight: <?php echo esc_attr( $settings->heading_font['weight'] ); ?>;
+<?php endif; ?>
+}
+
+/* ── Box ──────────────────────────────────────────────── */
+.fl-node-<?php echo $id; ?> .wsbb-heading-wrap {
+<?php if ( ! empty( $settings->background_color ) ) : ?>
+    background-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->background_color ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->padding ) ) : ?>
+    padding: <?php echo esc_attr( $settings->padding ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->border_radius ) ) : ?>
+    border-radius: <?php echo esc_attr( $settings->border_radius ); ?>px;
 <?php endif; ?>
 }

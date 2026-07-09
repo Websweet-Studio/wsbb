@@ -11,7 +11,7 @@ class Wsbb_Heading extends FLBuilderModule
             'category'        => __('Layout', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-heading/',
             'url'             => WSBB_MODULES_URL . 'wsbb-heading/',
-            'icon'            => 'text.svg',
+            'icon'            => 'heading',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
@@ -129,6 +129,42 @@ FLBuilder::register_module('Wsbb_Heading', array(
                             'type'     => 'css',
                             'selector' => '.wsbb-heading-text',
                             'property' => 'letter-spacing',
+                        ),
+                    ),
+                ),
+            ),
+            'box' => array(
+                'title'  => __('Box', 'wsbb'),
+                'fields' => array(
+                    'background_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Background Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-heading-wrap',
+                            'property' => 'background-color',
+                        ),
+                    ),
+                    'padding' => array(
+                        'type'        => 'dimension',
+                        'label'       => __('Padding', 'wsbb'),
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-heading-wrap',
+                            'property' => 'padding',
+                        ),
+                    ),
+                    'border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Radius', 'wsbb'),
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-heading-wrap',
+                            'property' => 'border-radius',
                         ),
                     ),
                 ),

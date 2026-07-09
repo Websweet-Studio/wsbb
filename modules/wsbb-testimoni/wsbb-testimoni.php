@@ -11,7 +11,7 @@ class Wsbb_Testimoni extends FLBuilderModule
             'category'        => __('Content', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-testimoni/',
             'url'             => WSBB_MODULES_URL . 'wsbb-testimoni/',
-            'icon'            => 'format-quote.svg',
+            'icon'            => 'format-quote',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
@@ -178,6 +178,17 @@ FLBuilder::register_module('Wsbb_Testimoni', array(
             'style' => array(
                 'title'  => __('Style', 'wsbb'),
                 'fields' => array(
+                    'card_bg_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Card Background', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'card_padding' => array(
+                        'type'        => 'dimension',
+                        'label'       => __('Card Padding', 'wsbb'),
+                        'description' => 'px',
+                    ),
                     'border_radius' => array(
                         'type'        => 'unit',
                         'label'       => __('Border Radius', 'wsbb'),
@@ -189,6 +200,24 @@ FLBuilder::register_module('Wsbb_Testimoni', array(
                         'label'       => __('Avatar Size', 'wsbb'),
                         'default'     => '60',
                         'description' => 'px',
+                    ),
+                    'text_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Text Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'name_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Name Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'role_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Role Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
                     ),
                 ),
             ),

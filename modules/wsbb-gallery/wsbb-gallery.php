@@ -11,7 +11,7 @@ class Wsbb_Gallery extends FLBuilderModule
             'category'        => __('Gallery', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-gallery/',
             'url'             => WSBB_MODULES_URL . 'wsbb-gallery/',
-            'icon'            => 'format-gallery.svg',
+            'icon'            => 'format-gallery',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
@@ -48,6 +48,38 @@ FLBuilder::register_module('Wsbb_Gallery', array(
             'style' => array(
                 'title'  => __('Style', 'wsbb'),
                 'fields' => array(
+                    'background_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Background Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-gallery-grid',
+                            'property' => 'background-color',
+                        ),
+                    ),
+                    'padding' => array(
+                        'type'        => 'dimension',
+                        'label'       => __('Padding', 'wsbb'),
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-gallery-grid',
+                            'property' => 'padding',
+                        ),
+                    ),
+                    'caption_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Caption Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-gallery-link',
+                            'property' => 'color',
+                        ),
+                    ),
                     'layout_style' => array(
                         'type'    => 'select',
                         'label'   => __('Gallery Style', 'wsbb'),
@@ -69,9 +101,9 @@ FLBuilder::register_module('Wsbb_Gallery', array(
                             'original' => __('Original', 'wsbb'),
                         ),
                         'show' => array(
-                            'fields' => array( 'layout_style' ),
+                            'fields' => array('layout_style'),
                             'options' => array(
-                                'layout_style' => array( 'grid' ),
+                                'layout_style' => array('grid'),
                             ),
                         ),
                     ),

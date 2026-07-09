@@ -11,7 +11,7 @@ class Wsbb_Image_Carousel extends FLBuilderModule
             'category'        => __('Gallery', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-image-carousel/',
             'url'             => WSBB_MODULES_URL . 'wsbb-image-carousel/',
-            'icon'            => 'slides.svg',
+            'icon'            => 'images-alt2',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
@@ -232,6 +232,23 @@ FLBuilder::register_module('Wsbb_Image_Carousel', array(
             'style' => array(
                 'title'  => __('Style', 'wsbb'),
                 'fields' => array(
+                    'background_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Background Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'padding' => array(
+                        'type'        => 'dimension',
+                        'label'       => __('Padding', 'wsbb'),
+                        'description' => 'px',
+                    ),
+                    'caption_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Caption Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
                     'border_radius' => array(
                         'type'        => 'unit',
                         'label'       => __('Border Radius', 'wsbb'),

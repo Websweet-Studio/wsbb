@@ -11,7 +11,7 @@ class Wsbb_Html extends FLBuilderModule
             'category'        => __('Layout', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-html/',
             'url'             => WSBB_MODULES_URL . 'wsbb-html/',
-            'icon'            => 'text.svg',
+            'icon'            => 'editor-code',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,

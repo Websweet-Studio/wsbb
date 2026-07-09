@@ -11,7 +11,7 @@ class Wsbb_Action extends FLBuilderModule
             'category'        => __('Layout', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-action/',
             'url'             => WSBB_MODULES_URL . 'wsbb-action/',
-            'icon'            => 'megaphone.svg',
+            'icon'            => 'megaphone',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
