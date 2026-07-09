@@ -47,6 +47,16 @@ function wsbb_load_modules()
 add_action('init', 'wsbb_load_modules', 99);
 
 /**
+ * Register WSBB Themer CPT early so admin recognizes the post type.
+ */
+function wsbb_load_themer_cpt() {
+  if ( class_exists( 'FLBuilder' ) ) {
+    require_once WSBB_PLUGIN_DIR . 'themer/class-wsbb-themer-cpt.php';
+  }
+}
+add_action( 'init', 'wsbb_load_themer_cpt', 10 );
+
+/**
  * Load Beaver Themer functionality.
  */
 function wsbb_load_themer() {
