@@ -121,6 +121,17 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
             'card' => array(
                 'title'  => __('Card', 'wsbb'),
                 'fields' => array(
+                    'card_style' => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Card Style', 'wsbb'),
+                        'default' => 'standard',
+                        'options' => array(
+                            'standard'  => __('Standard', 'wsbb'),
+                            'borderless' => __('Borderless', 'wsbb'),
+                            'minimal'   => __('Minimal', 'wsbb'),
+                            'elevated'  => __('Elevated', 'wsbb'),
+                        ),
+                    ),
                     'featured' => array(
                         'type'    => 'select',
                         'label'   => __('Featured / Highlight', 'wsbb'),
@@ -145,6 +156,47 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
                         'label'      => __('Border Color', 'wsbb'),
                         'show_reset' => true,
                         'show_alpha' => true,
+                    ),
+                    'border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Radius', 'wsbb'),
+                        'description' => 'px',
+                        'default'     => '8',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-pricelist-card',
+                            'property' => 'border-radius',
+                        ),
+                    ),
+                    'card_padding' => array(
+                        'type'        => 'dimension',
+                        'label'       => __('Padding', 'wsbb'),
+                        'description' => 'px',
+                        'default'     => '32',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-pricelist-card',
+                            'property' => 'padding',
+                        ),
+                    ),
+                    'content_align' => array(
+                        'type'    => 'align',
+                        'label'   => __('Content Alignment', 'wsbb'),
+                        'default' => 'left',
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-pricelist-card',
+                            'property' => 'text-align',
+                        ),
+                    ),
+                    'show_shadow' => array(
+                        'type'    => 'select',
+                        'label'   => __('Show Shadow on Hover', 'wsbb'),
+                        'default' => 'yes',
+                        'options' => array(
+                            'yes' => __('Yes', 'wsbb'),
+                            'no'  => __('No', 'wsbb'),
+                        ),
                     ),
                 ),
             ),
@@ -182,6 +234,26 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
             'button' => array(
                 'title'  => __('Button', 'wsbb'),
                 'fields' => array(
+                    'btn_style' => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Button Style', 'wsbb'),
+                        'default' => 'filled',
+                        'options' => array(
+                            'filled'   => __('Filled', 'wsbb'),
+                            'outlined' => __('Outlined', 'wsbb'),
+                        ),
+                    ),
+                    'btn_border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Button Border Radius', 'wsbb'),
+                        'description' => 'px',
+                        'default'     => '6',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-pricelist-btn',
+                            'property' => 'border-radius',
+                        ),
+                    ),
                     'btn_bg_color' => array(
                         'type'       => 'color',
                         'label'      => __('Background Color', 'wsbb'),

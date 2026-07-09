@@ -1,15 +1,18 @@
 <?php
 // Instance-specific CSS
-$selector = ".fl-node-$id .wsbb-pricelist-card";
+$selector    = ".fl-node-$id .wsbb-pricelist-card";
+$btn_style   = ! empty( $settings->btn_style ) ? $settings->btn_style : 'filled';
+$card_style  = ! empty( $settings->card_style ) ? $settings->card_style : 'standard';
 ?>
 
+/* Card background & border */
 <?php if ( ! empty( $settings->bg_color ) ) : ?>
 <?php echo $selector; ?> {
     background-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->bg_color ); ?>;
 }
 <?php endif; ?>
 
-<?php if ( ! empty( $settings->border_color ) ) : ?>
+<?php if ( ! empty( $settings->border_color ) && 'borderless' !== $card_style && 'minimal' !== $card_style && 'elevated' !== $card_style ) : ?>
 <?php echo $selector; ?> {
     border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->border_color ); ?>;
 }
@@ -48,9 +51,11 @@ if ( ! empty( $settings->name_font ) ) :
 }
 <?php endif; ?>
 
-.fl-node-<?php echo $id; ?> .wsbb-pricelist-btn {
+/* Button - Filled */
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-btn--filled {
 <?php if ( ! empty( $settings->btn_bg_color ) ) : ?>
     background-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ); ?>;
+    border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ); ?>;
 <?php endif; ?>
 <?php if ( ! empty( $settings->btn_text_color ) ) : ?>
     color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_text_color ); ?>;
@@ -58,9 +63,10 @@ if ( ! empty( $settings->name_font ) ) :
 }
 
 <?php if ( ! empty( $settings->btn_bg_hover ) || ! empty( $settings->btn_text_hover ) ) : ?>
-.fl-node-<?php echo $id; ?> .wsbb-pricelist-btn:hover {
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-btn--filled:hover {
 <?php if ( ! empty( $settings->btn_bg_hover ) ) : ?>
     background-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_hover ); ?>;
+    border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_hover ); ?>;
 <?php endif; ?>
 <?php if ( ! empty( $settings->btn_text_hover ) ) : ?>
     color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_text_hover ); ?>;
@@ -68,6 +74,29 @@ if ( ! empty( $settings->name_font ) ) :
 }
 <?php endif; ?>
 
+/* Button - Outlined */
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-btn--outlined {
+<?php if ( ! empty( $settings->btn_bg_color ) ) : ?>
+    border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->btn_text_color ) ) : ?>
+    color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_text_color ); ?>;
+<?php endif; ?>
+}
+
+<?php if ( ! empty( $settings->btn_bg_hover ) || ! empty( $settings->btn_text_hover ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-btn--outlined:hover {
+<?php if ( ! empty( $settings->btn_bg_hover ) ) : ?>
+    background-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_hover ); ?>;
+    border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_hover ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->btn_text_hover ) ) : ?>
+    color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_text_hover ); ?>;
+<?php endif; ?>
+}
+<?php endif; ?>
+
+/* Featured accent */
 <?php if ( 'yes' === $settings->featured && ! empty( $settings->btn_bg_color ) ) : ?>
 .fl-node-<?php echo $id; ?> .wsbb-pricelist-card--featured {
     border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->btn_bg_color ); ?>;
