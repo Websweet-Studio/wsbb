@@ -25,6 +25,7 @@
 # but track
 !.github
 !.gitignore
+!/.trae/
 
 # OS or Editor files and folders
 *.code-workspace
