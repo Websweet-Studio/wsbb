@@ -81,6 +81,14 @@ class Wsbb_Post extends FLBuilderModule
             );
         }
 
+        // Exclude current post
+        if (!empty($settings->exclude_current) && 'yes' === $settings->exclude_current) {
+            $current_post_id = get_the_ID();
+            if ($current_post_id) {
+                $args['post__not_in'] = array($current_post_id);
+            }
+        }
+
         // Author filter
         if (!empty($settings->author_type) && $settings->author_type !== 'all') {
             if ($settings->author_type === 'current') {
@@ -417,6 +425,16 @@ FLBuilder::register_module('Wsbb_Post', array(
                             'DESC' => __('Descending', 'wsbb'),
                             'ASC'  => __('Ascending', 'wsbb'),
                         ),
+                    ),
+                    'exclude_current' => array(
+                        'type'    => 'select',
+                        'label'   => __('Exclude Current Post', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
+                        ),
+                        'help'    => __('Exclude the currently viewed post from results.', 'wsbb'),
                     ),
                 ),
             ),
@@ -812,10 +830,34 @@ FLBuilder::register_module('Wsbb_Post', array(
             'card' => array(
                 'title'  => __('Card', 'wsbb'),
                 'fields' => array(
+                    'card_bg_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Background Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-post-item-inner',
+                            'property' => 'background-color',
+                        ),
+                    ),
+                    'card_border_width' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Width', 'wsbb'),
+                        'default'     => '0',
+                        'description' => 'px',
+                    ),
+                    'card_border_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Border Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
                     'gap' => array(
-                        'type'    => 'unit',
-                        'label'   => __('Gap', 'wsbb'),
-                        'default' => '20',
+                        'type'       => 'unit',
+                        'label'      => __('Gap', 'wsbb'),
+                        'default'    => '20',
+                        'responsive' => true,
                     ),
                     'border_radius' => array(
                         'type'    => 'unit',
@@ -831,6 +873,12 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'type'    => 'unit',
                         'label'   => __('Image Height', 'wsbb'),
                         'default' => '220',
+                    ),
+                    'image_border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Image Border Radius', 'wsbb'),
+                        'default'     => '0',
+                        'description' => 'px',
                     ),
                 ),
             ),

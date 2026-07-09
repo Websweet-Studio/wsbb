@@ -11,4 +11,7 @@
 <?php if ( ! empty( $settings->padding ) ) : ?>
     padding: <?php echo esc_attr( $settings->padding ); ?>;
 <?php endif; ?>
+<?php if ( ! empty( $settings->border_radius ) ) : ?>
+    border-radius: <?php echo intval( $settings->border_radius ); ?>px;
+<?php endif; ?>
 }

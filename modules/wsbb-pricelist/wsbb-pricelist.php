@@ -198,6 +198,18 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
                             'no'  => __('No', 'wsbb'),
                         ),
                     ),
+                    'feature_icon_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Feature Icon Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'default'    => '2e7d32',
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-pricelist-feature-icon::after',
+                            'property' => 'border-color',
+                        ),
+                    ),
                 ),
             ),
             'typography' => array(
@@ -222,6 +234,26 @@ FLBuilder::register_module('Wsbb_Pricelist', array(
                         'label'      => __('Price Color', 'wsbb'),
                         'show_reset' => true,
                         'default'    => '1a1a1a',
+                    ),
+                    'period_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Period Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'period_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Period Font Size', 'wsbb'),
+                        'default'     => '16',
+                        'description' => 'px',
+                    ),
+                    'desc_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Description Font', 'wsbb'),
+                        'default' => array(
+                            'family' => 'Default',
+                            'weight' => '400',
+                        ),
                     ),
                     'feature_color' => array(
                         'type'       => 'color',

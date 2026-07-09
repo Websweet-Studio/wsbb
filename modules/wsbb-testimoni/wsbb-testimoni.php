@@ -184,6 +184,18 @@ FLBuilder::register_module('Wsbb_Testimoni', array(
                         'show_reset' => true,
                         'show_alpha' => true,
                     ),
+                    'card_border_width' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Card Border Width', 'wsbb'),
+                        'default'     => '1',
+                        'description' => 'px',
+                    ),
+                    'card_border_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Card Border Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
                     'card_padding' => array(
                         'type'        => 'dimension',
                         'label'       => __('Card Padding', 'wsbb'),
@@ -200,6 +212,17 @@ FLBuilder::register_module('Wsbb_Testimoni', array(
                         'label'       => __('Avatar Size', 'wsbb'),
                         'default'     => '60',
                         'description' => 'px',
+                    ),
+                    'star_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Star Color', 'wsbb'),
+                        'show_reset' => true,
+                        'default'    => 'f5a623',
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-star-filled',
+                            'property' => 'color',
+                        ),
                     ),
                     'text_color' => array(
                         'type'       => 'color',

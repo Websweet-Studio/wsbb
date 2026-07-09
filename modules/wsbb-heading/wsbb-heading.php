@@ -63,7 +63,7 @@ FLBuilder::register_module('Wsbb_Heading', array(
         'title'    => __('Style', 'wsbb'),
         'sections' => array(
             'alignment' => array(
-                'title'  => __('Alignment', 'wsbb'),
+                'title'  => __('Alignment & Animation', 'wsbb'),
                 'fields' => array(
                     'align' => array(
                         'type'    => 'align',
@@ -73,6 +73,32 @@ FLBuilder::register_module('Wsbb_Heading', array(
                             'type'     => 'css',
                             'selector' => '.wsbb-heading-text',
                             'property' => 'text-align',
+                        ),
+                    ),
+                    'enable_animation' => array(
+                        'type'    => 'select',
+                        'label'   => __('Reveal Animation', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('None', 'wsbb'),
+                            'yes' => __('Enabled', 'wsbb'),
+                        ),
+                        'toggle'  => array(
+                            'yes' => array(
+                                'fields' => array('animation_type'),
+                            ),
+                        ),
+                    ),
+                    'animation_type' => array(
+                        'type'    => 'select',
+                        'label'   => __('Animation Type', 'wsbb'),
+                        'default' => 'fade-up',
+                        'options' => array(
+                            'fade-in'    => __('Fade In', 'wsbb'),
+                            'fade-up'    => __('Fade Up', 'wsbb'),
+                            'fade-left'  => __('Fade Left', 'wsbb'),
+                            'fade-right' => __('Fade Right', 'wsbb'),
+                            'zoom-in'    => __('Zoom In', 'wsbb'),
                         ),
                     ),
                 ),

@@ -106,6 +106,41 @@ if ( ! empty( $settings->name_font ) ) :
 }
 <?php endif; ?>
 
+<?php if ( ! empty( $settings->period_color ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-period {
+    color: <?php echo FLBuilderColor::hex_or_rgb( $settings->period_color ); ?>;
+}
+<?php endif; ?>
+
+<?php
+$period_size = isset( $settings->period_size ) ? intval( $settings->period_size ) : 0;
+if ( $period_size > 0 ) :
+?>
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-period {
+    font-size: <?php echo $period_size; ?>px;
+}
+<?php endif; ?>
+
+<?php if ( ! empty( $settings->desc_font ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-desc {
+<?php if ( ! empty( $settings->desc_font['family'] ) && 'Default' !== $settings->desc_font['family'] ) : ?>
+    font-family: <?php echo esc_attr( $settings->desc_font['family'] ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->desc_font['weight'] ) ) : ?>
+    font-weight: <?php echo esc_attr( $settings->desc_font['weight'] ); ?>;
+<?php endif; ?>
+}
+<?php endif; ?>
+
+<?php if ( ! empty( $settings->feature_icon_color ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-feature-icon {
+    background: <?php echo FLBuilderColor::hex_or_rgb( $settings->feature_icon_color ); ?>33;
+}
+.fl-node-<?php echo $id; ?> .wsbb-pricelist-feature-icon::after {
+    border-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->feature_icon_color ); ?>;
+}
+<?php endif; ?>
+
 /* ── Button base ─────────────────────────────────────── */
 .fl-node-<?php echo $id; ?> .wsbb-pricelist-btn {
     color: <?php echo $btn_text; ?>;

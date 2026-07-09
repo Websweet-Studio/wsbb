@@ -12,6 +12,22 @@ $selector = ".fl-node-$id .wsbb-heading-text";
     font-size: <?php echo esc_attr( $settings->font_size ); ?>px;
 <?php endif; ?>
 
+<?php if ( ! empty( $settings->font_size_medium ) ) : ?>
+@media ( max-width: 992px ) {
+    <?php echo $selector; ?> {
+        font-size: <?php echo esc_attr( $settings->font_size_medium ); ?>px;
+    }
+}
+<?php endif; ?>
+
+<?php if ( ! empty( $settings->font_size_responsive ) ) : ?>
+@media ( max-width: 600px ) {
+    <?php echo $selector; ?> {
+        font-size: <?php echo esc_attr( $settings->font_size_responsive ); ?>px;
+    }
+}
+<?php endif; ?>
+
 <?php if ( ! empty( $settings->line_height ) ) : ?>
     line-height: <?php echo esc_attr( $settings->line_height ); ?>;
 <?php endif; ?>

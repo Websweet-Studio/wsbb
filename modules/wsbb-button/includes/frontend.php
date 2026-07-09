@@ -19,10 +19,20 @@ $btn_class  = 'wsbb-button-link';
 $btn_class .= ' wsbb-button--' . $button_style;
 $btn_class .= ' wsbb-button-size--' . $size_preset;
 $btn_class .= 'yes' === $full_width ? ' wsbb-button--full' : '';
+
+$hover_anim = isset($settings->hover_animation) ? $settings->hover_animation : 'none';
+if ($hover_anim !== 'none') {
+    $btn_class .= ' wsbb-btn-hover--' . $hover_anim;
+}
+
+$tooltip_attr = '';
+if (!empty($settings->tooltip)) {
+    $tooltip_attr = ' title="' . esc_attr($settings->tooltip) . '"';
+}
 ?>
 <div <?php $module->render_attributes(); ?>>
     <div class="wsbb-button-wrap">
-        <a href="<?php echo esc_url($link); ?>" class="<?php echo esc_attr($btn_class); ?>"<?php echo $target; ?>>
+        <a href="<?php echo esc_url($link); ?>" class="<?php echo esc_attr($btn_class); ?>"<?php echo $target . $tooltip_attr; ?>>
             <?php if ($icon_position === 'before') : ?>
                 <?php echo $icon_html; ?>
             <?php endif; ?>

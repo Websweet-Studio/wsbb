@@ -1,0 +1,80 @@
+/* ============================================================
+   WSBB — Global Styles
+   ============================================================ */
+
+/* ── Reveal Animations ──────────────────────────────────── */
+@keyframes wsbb-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes wsbb-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes wsbb-fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes wsbb-fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes wsbb-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.wsbb-animate {
+  opacity: 0;
+}
+
+.wsbb-animate.wsbb-visible {
+  opacity: 1;
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+.wsbb-animate--fade-in.wsbb-visible {
+  animation-name: wsbb-fade-in;
+}
+.wsbb-animate--fade-up.wsbb-visible {
+  animation-name: wsbb-fade-up;
+}
+.wsbb-animate--fade-left.wsbb-visible {
+  animation-name: wsbb-fade-left;
+}
+.wsbb-animate--fade-right.wsbb-visible {
+  animation-name: wsbb-fade-right;
+}
+.wsbb-animate--zoom-in.wsbb-visible {
+  animation-name: wsbb-zoom-in;
+}

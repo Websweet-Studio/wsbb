@@ -13,11 +13,17 @@ class Wsbb_Public
 
     public function enqueue_styles()
     {
-        return;
+        $css_file = plugin_dir_url(__FILE__) . '../css/frontend.css';
+        if (file_exists(plugin_dir_path(__FILE__) . '../css/frontend.css')) {
+            wp_enqueue_style($this->plugin_name . '-frontend', $css_file, array(), $this->version);
+        }
     }
 
     public function enqueue_scripts()
     {
-        return;
+        $js_file = plugin_dir_url(__FILE__) . '../js/frontend.js';
+        if (file_exists(plugin_dir_path(__FILE__) . '../js/frontend.js')) {
+            wp_enqueue_script($this->plugin_name . '-frontend', $js_file, array(), $this->version, true);
+        }
     }
 }

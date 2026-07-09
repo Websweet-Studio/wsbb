@@ -90,3 +90,29 @@ $slides_resp   = ! empty( $settings->slides_responsive ) ? intval( $settings->sl
     color: <?php echo FLBuilderColor::hex_or_rgb( $settings->caption_color ); ?>;
 }
 <?php endif; ?>
+
+<?php if ( ! empty( $settings->caption_size ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-ic-caption {
+    font-size: <?php echo intval( $settings->caption_size ); ?>px;
+}
+<?php endif; ?>
+
+<?php if ( ! empty( $settings->caption_font ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-ic-caption {
+<?php if ( ! empty( $settings->caption_font['family'] ) && 'Default' !== $settings->caption_font['family'] ) : ?>
+    font-family: <?php echo esc_attr( $settings->caption_font['family'] ); ?>;
+<?php endif; ?>
+<?php if ( ! empty( $settings->caption_font['weight'] ) ) : ?>
+    font-weight: <?php echo esc_attr( $settings->caption_font['weight'] ); ?>;
+<?php endif; ?>
+}
+<?php endif; ?>
+
+<?php
+$img_fit = ! empty( $settings->image_object_fit ) ? $settings->image_object_fit : 'cover';
+if ( $img_fit !== 'cover' ) :
+?>
+.fl-node-<?php echo $id; ?> .wsbb-ic-item img {
+    object-fit: <?php echo esc_attr( $img_fit ); ?>;
+}
+<?php endif; ?>

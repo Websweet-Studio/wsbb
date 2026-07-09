@@ -2,6 +2,8 @@
 $layout_type = isset($settings->layout_type) ? $settings->layout_type : 'grid';
 $is_custom   = isset($settings->layout_content) && $settings->layout_content === 'custom';
 $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
+$gap_medium  = isset($settings->gap_medium) ? intval($settings->gap_medium) : 0;
+$gap_responsive = isset($settings->gap_responsive) ? intval($settings->gap_responsive) : 0;
 ?>
 
 /* ===== Grid Layout ===== */
@@ -15,12 +17,14 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
   @media (max-width: 992px) {
   .fl-node-<?php echo $id; ?> .wsbb-post-wrapper {
   grid-template-columns: repeat(<?php echo intval($settings->columns_medium); ?>, 1fr);
+  <?php if ($gap_medium > 0): ?>gap: <?php echo $gap_medium; ?>px;<?php endif; ?>
   }
   }
 
   @media (max-width: 600px) {
   .fl-node-<?php echo $id; ?> .wsbb-post-wrapper {
   grid-template-columns: repeat(<?php echo intval($settings->columns_responsive); ?>, 1fr);
+  <?php if ($gap_responsive > 0): ?>gap: <?php echo $gap_responsive; ?>px;<?php endif; ?>
   }
   }
 <?php endif; ?>
@@ -40,12 +44,20 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
   @media (max-width: 992px) {
   .fl-node-<?php echo $id; ?> .wsbb-post-wrapper {
   column-count: <?php echo intval($settings->columns_medium); ?>;
+  <?php if ($gap_medium > 0): ?>column-gap: <?php echo $gap_medium; ?>px;<?php endif; ?>
+  }
+  .fl-node-<?php echo $id; ?> .wsbb-post-item {
+  margin-bottom: <?php echo $gap_medium > 0 ? $gap_medium : $gap; ?>px;
   }
   }
 
   @media (max-width: 600px) {
   .fl-node-<?php echo $id; ?> .wsbb-post-wrapper {
   column-count: <?php echo intval($settings->columns_responsive); ?>;
+  <?php if ($gap_responsive > 0): ?>column-gap: <?php echo $gap_responsive; ?>px;<?php endif; ?>
+  }
+  .fl-node-<?php echo $id; ?> .wsbb-post-item {
+  margin-bottom: <?php echo $gap_responsive > 0 ? $gap_responsive : $gap; ?>px;
   }
   }
 <?php endif; ?>
@@ -56,6 +68,16 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
   display: flex;
   flex-direction: column;
   gap: <?php echo $gap; ?>px;
+  }
+  @media (max-width: 992px) {
+  .fl-node-<?php echo $id; ?> .wsbb-post-wrapper {
+  <?php if ($gap_medium > 0): ?>gap: <?php echo $gap_medium; ?>px;<?php endif; ?>
+  }
+  }
+  @media (max-width: 600px) {
+  .fl-node-<?php echo $id; ?> .wsbb-post-wrapper {
+  <?php if ($gap_responsive > 0): ?>gap: <?php echo $gap_responsive; ?>px;<?php endif; ?>
+  }
   }
 <?php endif; ?>
 
@@ -90,12 +112,27 @@ $gap         = isset($settings->gap) ? intval($settings->gap) : 20;
 /* ===== Common ===== */
 .fl-node-<?php echo $id; ?> .wsbb-post-item-inner {
 border-radius: <?php echo intval($settings->border_radius); ?>px;
+<?php if (!empty($settings->card_bg_color)): ?>
+  background-color: <?php echo FLBuilderColor::hex_or_rgb($settings->card_bg_color); ?>;
+<?php endif; ?>
+<?php
+$card_border_w = isset($settings->card_border_width) ? intval($settings->card_border_width) : 0;
+if ($card_border_w > 0 && !empty($settings->card_border_color)):
+?>
+  border: <?php echo $card_border_w; ?>px solid <?php echo FLBuilderColor::hex_or_rgb($settings->card_border_color); ?>;
+<?php endif; ?>
 }
 
 <?php if (!$is_custom): ?>
   .fl-node-<?php echo $id; ?> .wsbb-post-image img {
   height: <?php echo intval($settings->image_height); ?>px;
   object-fit: cover;
+  <?php
+  $img_br = isset($settings->image_border_radius) ? intval($settings->image_border_radius) : 0;
+  if ($img_br > 0):
+  ?>
+    border-radius: <?php echo $img_br; ?>px;
+  <?php endif; ?>
   }
 <?php endif; ?>
 

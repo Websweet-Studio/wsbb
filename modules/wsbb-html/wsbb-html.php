@@ -92,6 +92,51 @@ FLBuilder::register_module('Wsbb_Html', array(
                     ),
                 ),
             ),
+            'typography' => array(
+                'title'  => __('Typography', 'wsbb'),
+                'fields' => array(
+                    'html_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Font Family', 'wsbb'),
+                        'default' => array(
+                            'family' => 'Default',
+                            'weight' => '400',
+                        ),
+                    ),
+                    'font_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Font Size', 'wsbb'),
+                        'default'     => '',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-html-inner',
+                            'property' => 'font-size',
+                        ),
+                    ),
+                    'line_height' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Line Height', 'wsbb'),
+                        'default'     => '',
+                        'description' => '',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-html-inner',
+                            'property' => 'line-height',
+                        ),
+                    ),
+                    'text_align' => array(
+                        'type'    => 'align',
+                        'label'   => __('Alignment', 'wsbb'),
+                        'default' => 'left',
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-html-inner',
+                            'property' => 'text-align',
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
 ));

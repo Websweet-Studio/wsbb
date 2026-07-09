@@ -74,8 +74,37 @@ FLBuilder::register_module('Wsbb_Action', array(
     'style'   => array(
         'title'    => __('Style', 'wsbb'),
         'sections' => array(
+            'background'  => array(
+                'title'  => __('Background', 'wsbb'),
+                'fields' => array(
+                    'bg_image' => array(
+                        'type'  => 'photo',
+                        'label' => __('Background Image', 'wsbb'),
+                        'show'  => array(
+                            'fields' => array('bg_overlay', 'container_width'),
+                        ),
+                    ),
+                    'bg_overlay' => array(
+                        'type'       => 'color',
+                        'label'      => __('Overlay Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                        'help'       => __('Semi-transparent overlay on top of bg image.', 'wsbb'),
+                    ),
+                    'container_width' => array(
+                        'type'    => 'select',
+                        'label'   => __('Container Width', 'wsbb'),
+                        'default' => 'full',
+                        'options' => array(
+                            'narrow' => __('Narrow', 'wsbb'),
+                            'medium' => __('Medium', 'wsbb'),
+                            'full'   => __('Full', 'wsbb'),
+                        ),
+                    ),
+                ),
+            ),
             'alignment'  => array(
-                'title'  => __('Alignment', 'wsbb'),
+                'title'  => __('Alignment & Animation', 'wsbb'),
                 'fields' => array(
                     'content_align' => array(
                         'type'    => 'align',
@@ -85,6 +114,48 @@ FLBuilder::register_module('Wsbb_Action', array(
                             'type'     => 'css',
                             'selector' => '.wsbb-action-inner',
                             'property' => 'text-align',
+                        ),
+                    ),
+                    'btn_align' => array(
+                        'type'    => 'align',
+                        'label'   => __('Button Alignment', 'wsbb'),
+                        'default' => 'center',
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-action-btn-wrap',
+                            'property' => 'text-align',
+                        ),
+                    ),
+                    'gap_head_desc' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Gap Heading–Description', 'wsbb'),
+                        'default'     => '8',
+                        'description' => 'px',
+                    ),
+                    'enable_animation' => array(
+                        'type'    => 'select',
+                        'label'   => __('Reveal Animation', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('None', 'wsbb'),
+                            'yes' => __('Enabled', 'wsbb'),
+                        ),
+                        'toggle'  => array(
+                            'yes' => array(
+                                'fields' => array('animation_type'),
+                            ),
+                        ),
+                    ),
+                    'animation_type' => array(
+                        'type'    => 'select',
+                        'label'   => __('Animation Type', 'wsbb'),
+                        'default' => 'fade-up',
+                        'options' => array(
+                            'fade-in'    => __('Fade In', 'wsbb'),
+                            'fade-up'    => __('Fade Up', 'wsbb'),
+                            'fade-left'  => __('Fade Left', 'wsbb'),
+                            'fade-right' => __('Fade Right', 'wsbb'),
+                            'zoom-in'    => __('Zoom In', 'wsbb'),
                         ),
                     ),
                 ),

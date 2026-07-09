@@ -11,9 +11,16 @@ $btn_classes = 'wsbb-action-btn wsbb-action-btn--' . $btn_style . ' wsbb-action-
 if ($btn_full) {
     $btn_classes .= ' wsbb-action-btn--full';
 }
+
+$animate = ! empty($settings->enable_animation) && 'yes' === $settings->enable_animation;
+$anim_class = '';
+if ($animate) {
+    $anim_type = ! empty($settings->animation_type) ? $settings->animation_type : 'fade-up';
+    $anim_class = ' wsbb-animate wsbb-animate--' . $anim_type;
+}
 ?>
 <div <?php $module->render_attributes(); ?>>
-    <div class="wsbb-action-inner wsbb-action-btn-<?php echo esc_attr($btn_pos); ?>">
+    <div class="wsbb-action-inner wsbb-action-btn-<?php echo esc_attr($btn_pos); ?><?php echo $anim_class; ?>">
         <div class="wsbb-action-content">
             <?php if (! empty($settings->heading_text)) : ?>
                 <h2 class="wsbb-action-heading"><?php echo esc_html($settings->heading_text); ?></h2>

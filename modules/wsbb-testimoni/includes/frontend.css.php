@@ -44,6 +44,12 @@ $cols_resp = ! empty( $settings->columns_responsive ) ? intval( $settings->colum
 <?php if ( ! empty( $settings->card_bg_color ) ) : ?>
     background-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->card_bg_color ); ?>;
 <?php endif; ?>
+<?php
+$card_border_w = isset( $settings->card_border_width ) ? intval( $settings->card_border_width ) : 1;
+if ( $card_border_w > 0 && ! empty( $settings->card_border_color ) ) :
+?>
+    border: <?php echo $card_border_w; ?>px solid <?php echo FLBuilderColor::hex_or_rgb( $settings->card_border_color ); ?>;
+<?php endif; ?>
 <?php if ( ! empty( $settings->card_padding ) ) : ?>
     padding: <?php echo esc_attr( $settings->card_padding ); ?>;
 <?php endif; ?>
@@ -51,6 +57,13 @@ $cols_resp = ! empty( $settings->columns_responsive ) ? intval( $settings->colum
     border-radius: <?php echo intval( $settings->border_radius ); ?>px;
 <?php endif; ?>
 }
+
+/* ── Star color ────────────────────────────────────────── */
+<?php if ( ! empty( $settings->star_color ) ) : ?>
+.fl-node-<?php echo $id; ?> .wsbb-star-filled {
+    color: <?php echo FLBuilderColor::hex_or_rgb( $settings->star_color ); ?>;
+}
+<?php endif; ?>
 
 /* ── Typography colors ─────────────────────────────────── */
 <?php if ( ! empty( $settings->text_color ) ) : ?>

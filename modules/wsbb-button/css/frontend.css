@@ -52,3 +52,28 @@
 .wsbb-button-link:active {
     transform: translateY(0);
 }
+
+/* ── Hover animations ──────────────────────────────────── */
+.wsbb-btn-hover--pulse:hover {
+    animation: wsbb-pulse 0.4s ease-in-out;
+}
+.wsbb-btn-hover--shake:hover {
+    animation: wsbb-shake 0.4s ease-in-out;
+}
+.wsbb-btn-hover--glow:hover {
+    box-shadow: 0 0 20px rgba(41,98,255,0.5);
+}
+.wsbb-btn-hover--float:hover {
+    transform: translateY(-3px);
+}
+
+@keyframes wsbb-pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+@keyframes wsbb-shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-4px); }
+    75%      { transform: translateX(4px); }
+}

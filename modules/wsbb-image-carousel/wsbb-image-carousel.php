@@ -249,6 +249,20 @@ FLBuilder::register_module('Wsbb_Image_Carousel', array(
                         'show_reset' => true,
                         'show_alpha' => true,
                     ),
+                    'caption_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Caption Font Size', 'wsbb'),
+                        'default'     => '14',
+                        'description' => 'px',
+                    ),
+                    'caption_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Caption Font', 'wsbb'),
+                        'default' => array(
+                            'family' => 'Default',
+                            'weight' => '400',
+                        ),
+                    ),
                     'border_radius' => array(
                         'type'        => 'unit',
                         'label'       => __('Border Radius', 'wsbb'),
@@ -265,6 +279,16 @@ FLBuilder::register_module('Wsbb_Image_Carousel', array(
                             '16-9'     => '16:9',
                             '3-2'      => '3:2',
                             'original' => __('Original', 'wsbb'),
+                        ),
+                    ),
+                    'image_object_fit' => array(
+                        'type'    => 'select',
+                        'label'   => __('Image Fit', 'wsbb'),
+                        'default' => 'cover',
+                        'options' => array(
+                            'cover'     => __('Cover', 'wsbb'),
+                            'contain'   => __('Contain', 'wsbb'),
+                            'fill'      => __('Fill', 'wsbb'),
                         ),
                     ),
                 ),

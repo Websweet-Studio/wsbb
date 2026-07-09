@@ -314,6 +314,29 @@ FLBuilder::register_module('Wsbb_Button', array(
                     ),
                 ),
             ),
+            'animation' => array(
+                'title'  => __('Animation', 'wsbb'),
+                'fields' => array(
+                    'hover_animation' => array(
+                        'type'    => 'select',
+                        'label'   => __('Hover Animation', 'wsbb'),
+                        'default' => 'none',
+                        'options' => array(
+                            'none' => __('None', 'wsbb'),
+                            'pulse'    => __('Pulse', 'wsbb'),
+                            'shake'    => __('Shake', 'wsbb'),
+                            'glow'     => __('Glow', 'wsbb'),
+                            'float'    => __('Float', 'wsbb'),
+                        ),
+                    ),
+                    'tooltip' => array(
+                        'type'        => 'text',
+                        'label'       => __('Tooltip Text', 'wsbb'),
+                        'help'        => __('Shown on hover if filled.', 'wsbb'),
+                        'placeholder' => __('Optional tooltip...', 'wsbb'),
+                    ),
+                ),
+            ),
         ),
     ),
 ));

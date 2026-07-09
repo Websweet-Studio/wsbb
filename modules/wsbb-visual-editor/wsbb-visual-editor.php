@@ -77,6 +77,17 @@ FLBuilder::register_module('Wsbb_Visual_Editor', array(
                             'property' => 'padding',
                         ),
                     ),
+                    'border_radius' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Radius', 'wsbb'),
+                        'default'     => '0',
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-editor-inner',
+                            'property' => 'border-radius',
+                        ),
+                    ),
                 ),
             ),
         ),
