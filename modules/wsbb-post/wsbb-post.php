@@ -11,7 +11,7 @@ class Wsbb_Post extends FLBuilderModule
             'category'        => __('Posts', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-post/',
             'url'             => WSBB_MODULES_URL . 'wsbb-post/',
-            'icon'            => 'schedule.svg',
+            'icon'            => 'schedule',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
@@ -25,9 +25,7 @@ class Wsbb_Post extends FLBuilderModule
         $this->add_js('wsbb-post', $this->url . 'js/frontend.js', array('jquery'), WSBB_VERSION, true);
     }
 
-    /**
-     * Get all public post types for the post_type options dropdown.
-     */
+    /** All public post types for dropdown. */
     public static function get_post_type_options()
     {
         $post_types = get_post_types(array('public' => true), 'objects');
@@ -38,9 +36,98 @@ class Wsbb_Post extends FLBuilderModule
         return $options;
     }
 
-    /**
-     * Render custom layout with [wsbb ...] shortcodes.
-     */
+    /** All public taxonomies for dropdown (limit to common ones). */
+    public static function get_taxonomy_options()
+    {
+        $taxonomies = get_taxonomies(array('public' => true), 'objects');
+        $options = array('' => __('— None —', 'wsbb'));
+        foreach ($taxonomies as $slug => $tax) {
+            $options[$slug] = $tax->labels->singular_name . ' (' . $slug . ')';
+        }
+        return $options;
+    }
+
+    /** Build taxonomy/author/date WP_Query args from settings. */
+    public static function build_query_args($settings, $paged)
+    {
+        $args = array(
+            'post_type'      => $settings->post_type,
+            'posts_per_page' => intval($settings->posts_per_page),
+            'orderby'        => $settings->orderby,
+            'order'          => $settings->order,
+            'paged'          => $paged,
+        );
+
+        // Taxonomy filter
+        if (!empty($settings->taxonomy) && !empty($settings->terms)) {
+            $terms = array_map('trim', explode(',', $settings->terms));
+            $operator = !empty($settings->terms_operator) ? $settings->terms_operator : 'IN';
+
+            // Auto-detect: if all numeric treat as IDs, else treat as slugs
+            $field = 'slug';
+            if (array_reduce($terms, function ($carry, $t) {
+                return $carry && ctype_digit($t);
+            }, true)) {
+                $field = 'term_id';
+            }
+
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => $settings->taxonomy,
+                    'field'    => $field,
+                    'terms'    => $terms,
+                    'operator' => $operator,
+                ),
+            );
+        }
+
+        // Author filter
+        if (!empty($settings->author_type) && $settings->author_type !== 'all') {
+            if ($settings->author_type === 'current') {
+                $current_user = wp_get_current_user();
+                if ($current_user->exists()) {
+                    $args['author'] = $current_user->ID;
+                }
+            } elseif ($settings->author_type === 'specific' && !empty($settings->author_id)) {
+                $args['author'] = intval($settings->author_id);
+            }
+        }
+
+        // Date filter
+        if (!empty($settings->date_range) && $settings->date_range !== 'all') {
+            switch ($settings->date_range) {
+                case 'today':
+                    $args['date_query'] = array(array('after' => 'today', 'inclusive' => true));
+                    break;
+                case 'this_week':
+                    $args['date_query'] = array(array('week' => date('W'), 'year' => date('Y')));
+                    break;
+                case 'this_month':
+                    $args['date_query'] = array(array('month' => date('m'), 'year' => date('Y')));
+                    break;
+                case 'this_year':
+                    $args['date_query'] = array(array('year' => date('Y')));
+                    break;
+                case 'custom':
+                    $dq = array();
+                    if (!empty($settings->date_after)) {
+                        $dq['after'] = $settings->date_after;
+                    }
+                    if (!empty($settings->date_before)) {
+                        $dq['before'] = $settings->date_before;
+                    }
+                    if (!empty($dq)) {
+                        $args['date_query'] = array($dq);
+                    }
+                    break;
+            }
+        }
+
+        return $args;
+    }
+
+    // ─── Shortcode engine ───────────────────────────────────────
+
     public static function render_custom_layout($template, $post_id)
     {
         $post = get_post($post_id);
@@ -94,13 +181,12 @@ class Wsbb_Post extends FLBuilderModule
             $output
         );
 
-        // [wsbb post:link text="title"] or [wsbb post:link text="custom" custom_text="Read More »"]
+        // [wsbb post:link text="title"] or text="custom" custom_text="..."
         $output = preg_replace_callback(
             '/\[wsbb\s+post:link\s+(.*?)\]/',
             function ($matches) use ($post_id) {
                 $atts = self::parse_shortcode_atts($matches[1]);
                 $text = isset($atts['text']) ? $atts['text'] : 'title';
-
                 if ($text === 'title') {
                     $link_text = get_the_title($post_id);
                 } elseif ($text === 'custom' && isset($atts['custom_text'])) {
@@ -108,7 +194,6 @@ class Wsbb_Post extends FLBuilderModule
                 } else {
                     $link_text = get_the_title($post_id);
                 }
-
                 return '<a href="' . get_permalink($post_id) . '">' . esc_html($link_text) . '</a>';
             },
             $output
@@ -121,7 +206,6 @@ class Wsbb_Post extends FLBuilderModule
                 $atts = self::parse_shortcode_atts($matches[1]);
                 $linked = isset($atts['link']) && $atts['link'] === 'yes';
                 $author_name = get_the_author_meta('display_name', $post->post_author);
-
                 if ($linked) {
                     return '<a href="' . get_author_posts_url($post->post_author) . '">' . esc_html($author_name) . '</a>';
                 }
@@ -148,7 +232,6 @@ class Wsbb_Post extends FLBuilderModule
                 $atts   = self::parse_shortcode_atts($matches[1]);
                 $length = isset($atts['length']) ? intval($atts['length']) : 55;
                 $more   = isset($atts['more']) ? $atts['more'] : '...';
-
                 $excerpt = get_the_excerpt($post);
                 if (empty($excerpt)) {
                     $excerpt = wp_trim_words($post->post_content, $length, '');
@@ -158,7 +241,7 @@ class Wsbb_Post extends FLBuilderModule
             $output
         );
 
-        // [wsbb post:terms_list taxonomy="category" html_list="no" display="name" separator=", " limit="0" linked="no" orderby="name" order="SORT_ASC"]
+        // [wsbb post:terms_list taxonomy="category" ...]
         $output = preg_replace_callback(
             '/\[wsbb\s+post:terms_list\s+(.*?)\]/',
             function ($matches) use ($post_id) {
@@ -171,27 +254,18 @@ class Wsbb_Post extends FLBuilderModule
                 $linked    = isset($atts['linked']) && $atts['linked'] === 'yes';
                 $orderby   = isset($atts['orderby']) ? $atts['orderby'] : 'name';
                 $order     = isset($atts['order']) ? $atts['order'] : 'SORT_ASC';
-                // Normalize SORT_ASC/SORT_DESC to ASC/DESC for wp_get_post_terms
-                $order = str_replace('SORT_', '', $order);
+                $order     = str_replace('SORT_', '', $order);
 
                 $terms = wp_get_post_terms($post_id, $taxonomy, array('orderby' => $orderby, 'order' => $order));
                 if (is_wp_error($terms) || empty($terms)) {
                     return '';
                 }
-
                 if ($limit > 0) {
                     $terms = array_slice($terms, 0, $limit);
                 }
-
                 $items = array();
                 foreach ($terms as $term) {
-                    $text = '';
-                    if ($display === 'slug') {
-                        $text = $term->slug;
-                    } else {
-                        $text = $term->name;
-                    }
-
+                    $text = ($display === 'slug') ? $term->slug : $term->name;
                     if ($linked) {
                         $link = get_term_link($term);
                         if (!is_wp_error($link)) {
@@ -202,19 +276,11 @@ class Wsbb_Post extends FLBuilderModule
                     } else {
                         $text = esc_html($text);
                     }
-
                     $items[] = $text;
                 }
-
                 if ($html_list) {
-                    $out = '<ul>';
-                    foreach ($items as $item) {
-                        $out .= '<li>' . $item . '</li>';
-                    }
-                    $out .= '</ul>';
-                    return $out;
+                    return '<ul><li>' . implode('</li><li>', $items) . '</li></ul>';
                 }
-
                 return implode($separator, $items);
             },
             $output
@@ -229,7 +295,7 @@ class Wsbb_Post extends FLBuilderModule
             $output
         );
 
-        // [wp_store_thumbnail id="..."], [wp_store_price id="..."], etc.
+        // [wp_store_thumbnail], [wp_store_price], etc.
         $output = preg_replace_callback(
             '/\[(wp_store_thumbnail|wp_store_price|wp_store_add_to_cart|wp_store_detail|wp_store_add_to_wishlist)\s*(.*?)\]/s',
             function ($matches) use ($post_id) {
@@ -241,9 +307,6 @@ class Wsbb_Post extends FLBuilderModule
         return $output;
     }
 
-    /**
-     * Render a wp-store shortcode by delegating to the WpStore Shortcode class.
-     */
     private static function render_wp_store_shortcode($tag, $atts_string, $post_id)
     {
         static $wps_shortcode = null;
@@ -272,9 +335,7 @@ class Wsbb_Post extends FLBuilderModule
             return '';
         }
 
-        // Parse user-supplied atts
         $atts = self::parse_shortcode_atts($atts_string);
-        // Auto-inject id if not provided by user
         if (!isset($atts['id'])) {
             $atts['id'] = $post_id;
         }
@@ -283,15 +344,10 @@ class Wsbb_Post extends FLBuilderModule
         return call_user_func(array($wps_shortcode, $method), $atts);
     }
 
-    /**
-     * Parse shortcode attribute string into associative array.
-     */
     private static function parse_shortcode_atts($atts_string)
     {
         $atts = array();
         preg_match_all('/(\w+)\s*=\s*(["\'])([^"\']*)\2/', $atts_string, $matches, PREG_SET_ORDER);
-        // Build atts, using match[3] as value (the capture inside the quotes)
-        $atts = array();
         foreach ($matches as $m) {
             $atts[$m[1]] = $m[3];
         }
@@ -299,8 +355,14 @@ class Wsbb_Post extends FLBuilderModule
     }
 }
 
-// Register the module
+// ─── Register Module ──────────────────────────────────────────
+
+$post_type_options = Wsbb_Post::get_post_type_options();
+$taxonomy_options  = Wsbb_Post::get_taxonomy_options();
+
 FLBuilder::register_module('Wsbb_Post', array(
+
+    // ─── Tab: Content ────────────────────────────────────────
     'content' => array(
         'title'    => __('Content', 'wsbb'),
         'sections' => array(
@@ -318,6 +380,7 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'toggle' => array(
                             'custom' => array(
                                 'fields' => array('post_type', 'posts_per_page', 'orderby', 'order'),
+                                'sections' => array('query_filters'),
                             ),
                             'main' => array(),
                         ),
@@ -326,24 +389,24 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'type'    => 'select',
                         'label'   => __('Post Type', 'wsbb'),
                         'default' => 'post',
-                        'options' => Wsbb_Post::get_post_type_options(),
+                        'options' => $post_type_options,
                     ),
                     'posts_per_page' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Posts Per Page', 'wsbb'),
-                        'default'     => '6',
-                        'description' => '',
+                        'type'    => 'unit',
+                        'label'   => __('Posts Per Page', 'wsbb'),
+                        'default' => '6',
                     ),
                     'orderby' => array(
                         'type'    => 'select',
                         'label'   => __('Order By', 'wsbb'),
                         'default' => 'date',
                         'options' => array(
-                            'date'     => __('Date', 'wsbb'),
-                            'title'    => __('Title', 'wsbb'),
-                            'rand'     => __('Random', 'wsbb'),
-                            'modified' => __('Modified', 'wsbb'),
+                            'date'       => __('Date', 'wsbb'),
+                            'title'      => __('Title', 'wsbb'),
+                            'rand'       => __('Random', 'wsbb'),
+                            'modified'   => __('Modified', 'wsbb'),
                             'menu_order' => __('Menu Order', 'wsbb'),
+                            'comment_count' => __('Comment Count', 'wsbb'),
                         ),
                     ),
                     'order' => array(
@@ -357,8 +420,83 @@ FLBuilder::register_module('Wsbb_Post', array(
                     ),
                 ),
             ),
+            'query_filters' => array(
+                'title'  => __('Filters', 'wsbb'),
+                'fields' => array(
+                    'taxonomy' => array(
+                        'type'    => 'select',
+                        'label'   => __('Filter by Taxonomy', 'wsbb'),
+                        'default' => '',
+                        'options' => $taxonomy_options,
+                        'help'    => __('Choose a taxonomy to filter by, then enter term slugs or IDs below.', 'wsbb'),
+                    ),
+                    'terms' => array(
+                        'type'        => 'text',
+                        'label'       => __('Terms', 'wsbb'),
+                        'description' => __('Comma-separated slugs or IDs', 'wsbb'),
+                        'help'        => __('Enter term slugs (e.g. news, blog) or numeric IDs (e.g. 5, 12) separated by commas.', 'wsbb'),
+                    ),
+                    'terms_operator' => array(
+                        'type'    => 'select',
+                        'label'   => __('Terms Operator', 'wsbb'),
+                        'default' => 'IN',
+                        'options' => array(
+                            'IN'     => __('IN — posts in any of these terms', 'wsbb'),
+                            'NOT IN' => __('NOT IN — exclude these terms', 'wsbb'),
+                            'AND'    => __('AND — posts must have all terms', 'wsbb'),
+                        ),
+                    ),
+                    'author_type' => array(
+                        'type'    => 'select',
+                        'label'   => __('Filter by Author', 'wsbb'),
+                        'default' => 'all',
+                        'options' => array(
+                            'all'     => __('All Authors', 'wsbb'),
+                            'current' => __('Current User', 'wsbb'),
+                            'specific' => __('Specific Author ID', 'wsbb'),
+                        ),
+                        'toggle' => array(
+                            'specific' => array(
+                                'fields' => array('author_id'),
+                            ),
+                        ),
+                    ),
+                    'author_id' => array(
+                        'type'    => 'unit',
+                        'label'   => __('Author ID', 'wsbb'),
+                    ),
+                    'date_range' => array(
+                        'type'    => 'select',
+                        'label'   => __('Filter by Date', 'wsbb'),
+                        'default' => 'all',
+                        'options' => array(
+                            'all'        => __('All Dates', 'wsbb'),
+                            'today'      => __('Today', 'wsbb'),
+                            'this_week'  => __('This Week', 'wsbb'),
+                            'this_month' => __('This Month', 'wsbb'),
+                            'this_year'  => __('This Year', 'wsbb'),
+                            'custom'     => __('Custom Range', 'wsbb'),
+                        ),
+                        'toggle' => array(
+                            'custom' => array(
+                                'fields' => array('date_after', 'date_before'),
+                            ),
+                        ),
+                    ),
+                    'date_after' => array(
+                        'type'  => 'date',
+                        'label' => __('From (start date)', 'wsbb'),
+                    ),
+                    'date_before' => array(
+                        'type'  => 'date',
+                        'label' => __('To (end date)', 'wsbb'),
+                    ),
+                ),
+            ),
         ),
     ),
+
+    // ─── Tab: Layout ─────────────────────────────────────────
     'layout' => array(
         'title'    => __('Layout', 'wsbb'),
         'sections' => array(
@@ -398,7 +536,7 @@ FLBuilder::register_module('Wsbb_Post', array(
                         ),
                         'toggle' => array(
                             'default' => array(
-                                'sections' => array('style', 'elements'),
+                                'sections' => array('elements'),
                             ),
                             'custom' => array(
                                 'sections' => array('custom_html', 'custom_css', 'shortcode_ref'),
@@ -436,7 +574,7 @@ FLBuilder::register_module('Wsbb_Post', array(
 </p>
 </div>',
                         'rows' => '20',
-                        'help'    => __('HTML for inner content of each post card. Use [wsbb] shortcodes.', 'wsbb'),
+                        'help' => __('HTML for inner content of each post card. Use [wsbb] shortcodes.', 'wsbb'),
                     ),
                 ),
             ),
@@ -458,90 +596,32 @@ FLBuilder::register_module('Wsbb_Post', array(
 .wsbb-post-card:hover {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-
-/* Featured Image */
-.wsbb-post-thumbnail {
-  overflow: hidden;
-  line-height: 0;
-}
+.wsbb-post-thumbnail { overflow: hidden; line-height: 0; }
 .wsbb-post-thumbnail img {
-  width: 100%;
-  height: 220px;
+  width: 100%; height: 220px;
   object-fit: cover;
   transition: transform 0.35s ease;
 }
-.wsbb-post-thumbnail a:hover img {
-  transform: scale(1.05);
-}
-
-/* Headings */
-.wsbb-post-heading {
-  margin: 16px 0 8px;
-  font-size: 1.15rem;
-  line-height: 1.4;
-}
-.wsbb-post-heading a {
-  color: inherit;
-  text-decoration: none;
-}
-.wsbb-post-heading a:hover {
-  color: #0073aa;
-}
-
-/* Meta */
-.wsbb-post-meta {
-  font-size: 0.85rem;
-  color: #888;
-  margin: 0 0 10px;
-}
-.wsbb-posted-by a {
-  color: #888;
-  text-decoration: none;
-}
-.wsbb-posted-by a:hover {
-  color: #0073aa;
-}
-
-/* Excerpt */
-.wsbb-post-description {
-  font-size: 0.95rem;
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-/* Read More */
-.wsbb-read-more-text {
-  margin: 8px 0 16px;
-}
+.wsbb-post-thumbnail a:hover img { transform: scale(1.05); }
+.wsbb-post-heading { margin: 16px 0 8px; font-size: 1.15rem; line-height: 1.4; }
+.wsbb-post-heading a { color: inherit; text-decoration: none; }
+.wsbb-post-heading a:hover { color: #0073aa; }
+.wsbb-post-meta { font-size: 0.85rem; color: #888; margin: 0 0 10px; }
+.wsbb-posted-by a { color: #888; text-decoration: none; }
+.wsbb-posted-by a:hover { color: #0073aa; }
+.wsbb-post-description { font-size: 0.95rem; color: #555; line-height: 1.6; margin-bottom: 15px; }
+.wsbb-read-more-text { margin: 8px 0 16px; }
 .wsbb-read-more-text a {
-  display: inline-block;
-  padding: 8px 18px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #fff;
-  background: #0073aa;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: background 0.2s ease;
+  display: inline-block; padding: 8px 18px; font-size: 0.9rem;
+  font-weight: 600; color: #fff; background: #0073aa;
+  border-radius: 4px; text-decoration: none; transition: background 0.2s ease;
 }
-.wsbb-read-more-text a:hover {
-  background: #005177;
-  color: #fff;
-}
-
-/* Section Spacing */
-.wsbb-post-content {
-  padding: 15px;
-}
-.wsbb-post-content > *:first-child {
-  margin-top: 0;
-}
-.wsbb-post-content > *:last-child {
-  margin-bottom: 0;
-}',
+.wsbb-read-more-text a:hover { background: #005177; color: #fff; }
+.wsbb-post-content { padding: 15px; }
+.wsbb-post-content > *:first-child { margin-top: 0; }
+.wsbb-post-content > *:last-child { margin-bottom: 0; }',
                         'rows' => '18',
-                        'help'    => __('Custom CSS for styling your post card elements. Use class names from your HTML above.', 'wsbb'),
+                        'help' => __('Custom CSS for styling your post card elements.', 'wsbb'),
                     ),
                 ),
             ),
@@ -552,13 +632,14 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'type'    => 'raw',
                         'label'   => __('Available Shortcodes', 'wsbb'),
                         'content' => '<div style="background:#f8f9fa;border:1px solid #dee2e6;border-radius:3px;padding:8px 12px;font-family:monospace;font-size:12px;line-height:1.9;">'
-                            . '<b>[wsbb post:featured_image size="large" display="tag" linked="yes"]</b> — Featured image. size: thumbnail/medium/large/full, display: tag|url, linked: yes|no<br>'
-                            . '<b>[wsbb post:title]</b> — Judul post (plain text, tanpa link)<br>'
-                            . '<b>[wsbb post:link text="title"]</b> — Link ke post. text="custom" custom_text="Read More"<br>'
-                            . '<b>[wsbb post:author_name link="yes"]</b> — Nama author. link: yes|no<br>'
-                            . '<b>[wsbb post:date format="F j, Y"]</b> — Tanggal post. format: PHP date format<br>'
-                            . '<b>[wsbb post:excerpt length="55" more="..."]</b> — Excerpt. length: jumlah kata, more: suffix<br>'
-                            . '<b>[wsbb-if post:featured_image]...[/wsbb-if]</b> — Conditional: tampilkan hanya jika post punya featured image'
+                            . '<b>[wsbb post:featured_image size="large" display="tag" linked="yes"]</b> — Featured image. size: thumbnail/medium/large/full<br>'
+                            . '<b>[wsbb post:title]</b> — Post title (plain text)<br>'
+                            . '<b>[wsbb post:link text="title"]</b> — Linked post title. text="custom" custom_text="Read More"<br>'
+                            . '<b>[wsbb post:author_name link="yes"]</b> — Author name<br>'
+                            . '<b>[wsbb post:date format="F j, Y"]</b> — Post date (PHP date format)<br>'
+                            . '<b>[wsbb post:excerpt length="55" more="..."]</b> — Post excerpt<br>'
+                            . '<b>[wsbb-if post:featured_image]...[/wsbb-if]</b> — Conditional block<br>'
+                            . '<b>[wsbb post:terms_list taxonomy="category" ...]</b> — Taxonomy terms list'
                             . '</div>',
                     ),
                 ),
@@ -599,81 +680,68 @@ FLBuilder::register_module('Wsbb_Post', array(
                             '2' => '2',
                         ),
                     ),
-                    'gap' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Gap', 'wsbb'),
-                        'default'     => '20',
-                        'description' => 'px',
-                    ),
                 ),
             ),
             'carousel_settings' => array(
                 'title'  => __('Carousel Settings', 'wsbb'),
                 'fields' => array(
                     'carousel_slides' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Slides Per View', 'wsbb'),
-                        'default'     => '3',
-                        'description' => '',
+                        'type'    => 'unit',
+                        'label'   => __('Slides Per View', 'wsbb'),
+                        'default' => '3',
+                    ),
+                    'carousel_slides_medium' => array(
+                        'type'    => 'select',
+                        'label'   => __('Slides (Medium)', 'wsbb'),
+                        'default' => '2',
+                        'options' => array(
+                            '1' => '1',
+                            '2' => '2',
+                            '3' => '3',
+                        ),
+                    ),
+                    'carousel_slides_responsive' => array(
+                        'type'    => 'select',
+                        'label'   => __('Slides (Small)', 'wsbb'),
+                        'default' => '1',
+                        'options' => array(
+                            '1' => '1',
+                            '2' => '2',
+                        ),
                     ),
                     'carousel_gap' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Gap', 'wsbb'),
-                        'default'     => '20',
-                        'description' => 'px',
+                        'type'    => 'unit',
+                        'label'   => __('Gap', 'wsbb'),
+                        'default' => '20',
                     ),
                     'carousel_autoplay' => array(
                         'type'    => 'select',
                         'label'   => __('Autoplay', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'carousel_autoplay_speed' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Autoplay Speed', 'wsbb'),
-                        'default'     => '4000',
-                        'description' => 'ms',
+                        'type'    => 'unit',
+                        'label'   => __('Autoplay Speed', 'wsbb'),
+                        'default' => '4000',
                     ),
                     'carousel_arrows' => array(
                         'type'    => 'select',
                         'label'   => __('Show Arrows', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'carousel_dots' => array(
                         'type'    => 'select',
                         'label'   => __('Show Dots', 'wsbb'),
                         'default' => 'no',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'carousel_loop' => array(
                         'type'    => 'select',
                         'label'   => __('Infinite Loop', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
-                    ),
-                ),
-            ),
-            'style' => array(
-                'title'  => __('Style', 'wsbb'),
-                'fields' => array(
-                    'border_radius' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Border Radius', 'wsbb'),
-                        'default'     => '8',
-                        'description' => 'px',
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                 ),
             ),
@@ -684,58 +752,48 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'type'    => 'select',
                         'label'   => __('Show Featured Image', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
-                    'image_height' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Image Height', 'wsbb'),
-                        'default'     => '220',
-                        'description' => 'px',
+                    'image_size' => array(
+                        'type'    => 'select',
+                        'label'   => __('Image Size', 'wsbb'),
+                        'default' => 'medium_large',
+                        'options' => array(
+                            'thumbnail'    => __('Thumbnail', 'wsbb'),
+                            'medium'       => __('Medium', 'wsbb'),
+                            'medium_large' => __('Medium Large', 'wsbb'),
+                            'large'        => __('Large', 'wsbb'),
+                            'full'         => __('Full', 'wsbb'),
+                        ),
                     ),
                     'show_title' => array(
                         'type'    => 'select',
                         'label'   => __('Show Title', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'show_excerpt' => array(
                         'type'    => 'select',
                         'label'   => __('Show Excerpt', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'excerpt_length' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Excerpt Length', 'wsbb'),
-                        'default'     => '20',
-                        'description' => __('words', 'wsbb'),
+                        'type'    => 'unit',
+                        'label'   => __('Excerpt Length', 'wsbb'),
+                        'default' => '20',
                     ),
                     'show_date' => array(
                         'type'    => 'select',
                         'label'   => __('Show Date', 'wsbb'),
                         'default' => 'yes',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'show_author' => array(
                         'type'    => 'select',
                         'label'   => __('Show Author', 'wsbb'),
                         'default' => 'no',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'read_more_text' => array(
                         'type'    => 'text',
@@ -746,6 +804,100 @@ FLBuilder::register_module('Wsbb_Post', array(
             ),
         ),
     ),
+
+    // ─── Tab: Style ──────────────────────────────────────────
+    'style' => array(
+        'title'    => __('Style', 'wsbb'),
+        'sections' => array(
+            'card' => array(
+                'title'  => __('Card', 'wsbb'),
+                'fields' => array(
+                    'gap' => array(
+                        'type'    => 'unit',
+                        'label'   => __('Gap', 'wsbb'),
+                        'default' => '20',
+                    ),
+                    'border_radius' => array(
+                        'type'    => 'unit',
+                        'label'   => __('Border Radius', 'wsbb'),
+                        'default' => '8',
+                    ),
+                ),
+            ),
+            'image' => array(
+                'title'  => __('Image', 'wsbb'),
+                'fields' => array(
+                    'image_height' => array(
+                        'type'    => 'unit',
+                        'label'   => __('Image Height', 'wsbb'),
+                        'default' => '220',
+                    ),
+                ),
+            ),
+            'typography' => array(
+                'title'  => __('Typography', 'wsbb'),
+                'fields' => array(
+                    'title_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Title Font', 'wsbb'),
+                        'default' => array('family' => 'Default', 'weight' => '600'),
+                    ),
+                    'title_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Title Color', 'wsbb'),
+                        'show_reset' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-post-title a',
+                            'property' => 'color',
+                        ),
+                    ),
+                    'meta_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Meta Color', 'wsbb'),
+                        'show_reset' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-post-meta',
+                            'property' => 'color',
+                        ),
+                    ),
+                    'excerpt_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Excerpt Color', 'wsbb'),
+                        'show_reset' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-post-excerpt',
+                            'property' => 'color',
+                        ),
+                    ),
+                ),
+            ),
+            'button' => array(
+                'title'  => __('Button', 'wsbb'),
+                'fields' => array(
+                    'readmore_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Read More Color', 'wsbb'),
+                        'show_reset' => true,
+                        'preview'    => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-post-readmore',
+                            'property' => 'color',
+                        ),
+                    ),
+                    'readmore_hover_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Read More Hover', 'wsbb'),
+                        'show_reset' => true,
+                    ),
+                ),
+            ),
+        ),
+    ),
+
+    // ─── Tab: Pagination ─────────────────────────────────────
     'pagination' => array(
         'title'    => __('Pagination', 'wsbb'),
         'sections' => array(
@@ -756,17 +908,14 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'type'    => 'select',
                         'label'   => __('Enable Pagination', 'wsbb'),
                         'default' => 'no',
-                        'options' => array(
-                            'yes' => __('Yes', 'wsbb'),
-                            'no'  => __('No', 'wsbb'),
-                        ),
+                        'options' => array('yes' => __('Yes', 'wsbb'), 'no' => __('No', 'wsbb')),
                     ),
                     'pagination_type' => array(
                         'type'    => 'select',
                         'label'   => __('Pagination Type', 'wsbb'),
                         'default' => 'numbers',
                         'options' => array(
-                            'numbers'  => __('Numbers', 'wsbb'),
+                            'numbers'   => __('Numbers', 'wsbb'),
                             'prev_next' => __('Prev / Next', 'wsbb'),
                         ),
                     ),

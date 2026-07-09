@@ -11,15 +11,23 @@ if (!empty($settings->button_icon)) {
 }
 
 $icon_position = isset($settings->icon_position) ? $settings->icon_position : 'before';
+$button_style  = isset($settings->button_style) ? $settings->button_style : 'filled';
+$full_width    = isset($settings->full_width) ? $settings->full_width : 'no';
+$size_preset   = isset($settings->size_preset) ? $settings->size_preset : 'custom';
+
+$btn_class  = 'wsbb-button-link';
+$btn_class .= ' wsbb-button--' . $button_style;
+$btn_class .= ' wsbb-button-size--' . $size_preset;
+$btn_class .= 'yes' === $full_width ? ' wsbb-button--full' : '';
 ?>
 <div <?php $module->render_attributes(); ?>>
     <div class="wsbb-button-wrap">
-        <a href="<?php echo esc_url($link); ?>" class="wsbb-button-link"<?php echo $target; ?>>
-            <?php if ($icon_position === 'before'): ?>
+        <a href="<?php echo esc_url($link); ?>" class="<?php echo esc_attr($btn_class); ?>"<?php echo $target; ?>>
+            <?php if ($icon_position === 'before') : ?>
                 <?php echo $icon_html; ?>
             <?php endif; ?>
             <span class="wsbb-button-text"><?php echo esc_html($settings->button_text); ?></span>
-            <?php if ($icon_position === 'after'): ?>
+            <?php if ($icon_position === 'after') : ?>
                 <?php echo $icon_html; ?>
             <?php endif; ?>
         </a>

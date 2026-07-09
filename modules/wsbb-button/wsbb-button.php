@@ -11,7 +11,7 @@ class Wsbb_Button extends FLBuilderModule
             'category'        => __('Layout', 'wsbb'),
             'dir'             => WSBB_MODULES_DIR . 'wsbb-button/',
             'url'             => WSBB_MODULES_URL . 'wsbb-button/',
-            'icon'            => 'button.svg',
+            'icon'            => 'button',
             'editor_export'   => true,
             'enabled'         => true,
             'partial_refresh' => false,
@@ -25,7 +25,6 @@ class Wsbb_Button extends FLBuilderModule
     }
 }
 
-// Register the module
 FLBuilder::register_module('Wsbb_Button', array(
     'general' => array(
         'title'    => __('General', 'wsbb'),
@@ -45,7 +44,7 @@ FLBuilder::register_module('Wsbb_Button', array(
                     'button_link' => array(
                         'type'          => 'link',
                         'label'         => __('Link', 'wsbb'),
-                        'placeholder'   => 'http://www.example.com',
+                        'placeholder'   => 'https://',
                         'show_target'   => true,
                         'show_nofollow' => true,
                     ),
@@ -73,6 +72,16 @@ FLBuilder::register_module('Wsbb_Button', array(
             'style' => array(
                 'title'  => __('Button Style', 'wsbb'),
                 'fields' => array(
+                    'button_style' => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Button Style', 'wsbb'),
+                        'default' => 'filled',
+                        'options' => array(
+                            'filled'   => __('Filled', 'wsbb'),
+                            'outlined' => __('Outlined', 'wsbb'),
+                            'ghost'    => __('Ghost', 'wsbb'),
+                        ),
+                    ),
                     'align' => array(
                         'type'    => 'align',
                         'label'   => __('Alignment', 'wsbb'),
@@ -83,6 +92,36 @@ FLBuilder::register_module('Wsbb_Button', array(
                             'property' => 'text-align',
                         ),
                     ),
+                    'full_width' => array(
+                        'type'    => 'select',
+                        'label'   => __('Full Width', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
+                        ),
+                    ),
+                    'size_preset' => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Size', 'wsbb'),
+                        'default' => 'custom',
+                        'options' => array(
+                            'small'  => __('Small', 'wsbb'),
+                            'medium' => __('Medium', 'wsbb'),
+                            'large'  => __('Large', 'wsbb'),
+                            'custom' => __('Custom', 'wsbb'),
+                        ),
+                        'toggle' => array(
+                            'custom' => array(
+                                'fields' => array('padding_h', 'padding_v', 'font_size'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'colors' => array(
+                'title'  => __('Colors', 'wsbb'),
+                'fields' => array(
                     'text_color' => array(
                         'type'       => 'color',
                         'label'      => __('Text Color', 'wsbb'),
@@ -94,6 +133,12 @@ FLBuilder::register_module('Wsbb_Button', array(
                             'selector' => '.wsbb-button-link',
                             'property' => 'color',
                         ),
+                    ),
+                    'text_hover_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Text Hover Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
                     ),
                     'bg_type' => array(
                         'type'    => 'select',
@@ -131,11 +176,16 @@ FLBuilder::register_module('Wsbb_Button', array(
                     ),
                     'bg_hover_color' => array(
                         'type'       => 'color',
-                        'label'      => __('Hover Background Color', 'wsbb'),
+                        'label'      => __('Hover Background', 'wsbb'),
                         'show_reset' => true,
                         'show_alpha' => true,
                         'default'    => '005bb5',
                     ),
+                ),
+            ),
+            'border' => array(
+                'title'  => __('Border', 'wsbb'),
+                'fields' => array(
                     'border_radius' => array(
                         'type'        => 'unit',
                         'label'       => __('Border Radius', 'wsbb'),
@@ -147,6 +197,77 @@ FLBuilder::register_module('Wsbb_Button', array(
                             'property' => 'border-radius',
                         ),
                     ),
+                    'border_width' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Border Width', 'wsbb'),
+                        'default'     => '2',
+                        'description' => 'px',
+                    ),
+                    'border_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Border Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                    'border_hover_color' => array(
+                        'type'       => 'color',
+                        'label'      => __('Border Hover Color', 'wsbb'),
+                        'show_reset' => true,
+                        'show_alpha' => true,
+                    ),
+                ),
+            ),
+            'typography' => array(
+                'title'  => __('Typography', 'wsbb'),
+                'fields' => array(
+                    'button_font' => array(
+                        'type'    => 'font',
+                        'label'   => __('Font Family', 'wsbb'),
+                        'default' => array('family' => 'Default', 'weight' => '600'),
+                    ),
+                    'font_size' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Font Size', 'wsbb'),
+                        'default'     => '16',
+                        'description' => 'px',
+                        'responsive'  => true,
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'font-size',
+                        ),
+                    ),
+                    'font_weight' => array(
+                        'type'    => 'select',
+                        'label'   => __('Font Weight', 'wsbb'),
+                        'default' => '600',
+                        'options' => array(
+                            '400' => '400',
+                            '500' => '500',
+                            '600' => '600',
+                            '700' => '700',
+                        ),
+                        'preview' => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'font-weight',
+                        ),
+                    ),
+                    'letter_spacing' => array(
+                        'type'        => 'unit',
+                        'label'       => __('Letter Spacing', 'wsbb'),
+                        'description' => 'px',
+                        'preview'     => array(
+                            'type'     => 'css',
+                            'selector' => '.wsbb-button-link',
+                            'property' => 'letter-spacing',
+                        ),
+                    ),
+                ),
+            ),
+            'spacing' => array(
+                'title'  => __('Spacing', 'wsbb'),
+                'fields' => array(
                     'padding_h' => array(
                         'type'        => 'unit',
                         'label'       => __('Horizontal Padding', 'wsbb'),
@@ -169,31 +290,27 @@ FLBuilder::register_module('Wsbb_Button', array(
                             'property' => 'padding-top',
                         ),
                     ),
-                    'font_size' => array(
-                        'type'        => 'unit',
-                        'label'       => __('Font Size', 'wsbb'),
-                        'default'     => '16',
-                        'description' => 'px',
-                        'preview'     => array(
-                            'type'     => 'css',
-                            'selector' => '.wsbb-button-link',
-                            'property' => 'font-size',
+                ),
+            ),
+            'shadow' => array(
+                'title'  => __('Shadow', 'wsbb'),
+                'fields' => array(
+                    'box_shadow' => array(
+                        'type'    => 'select',
+                        'label'   => __('Enable Shadow', 'wsbb'),
+                        'default' => 'no',
+                        'options' => array(
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
                         ),
                     ),
-                    'font_weight' => array(
+                    'shadow_hover' => array(
                         'type'    => 'select',
-                        'label'   => __('Font Weight', 'wsbb'),
-                        'default' => '600',
+                        'label'   => __('Shadow on Hover', 'wsbb'),
+                        'default' => 'no',
                         'options' => array(
-                            '400' => '400',
-                            '500' => '500',
-                            '600' => '600',
-                            '700' => '700',
-                        ),
-                        'preview' => array(
-                            'type'     => 'css',
-                            'selector' => '.wsbb-button-link',
-                            'property' => 'font-weight',
+                            'no'  => __('No', 'wsbb'),
+                            'yes' => __('Yes', 'wsbb'),
                         ),
                     ),
                 ),
