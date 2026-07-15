@@ -1,5 +1,20 @@
 # Plan: Insert Shortcode Button di Post Card HTML Editor
 
+> **Status: BLOCKED** — 2026-07-15
+> Tombol toolbar belum muncul di builder. Sudah dicoba 3 pendekatan:
+> 1. `registerModuleHelper` + query DOM iframe → `.data('editor')` tidak accessible (Ace di parent)
+> 2. `addHook('settings-form-init')` + parent-window jQuery → hook timing / form not ready
+> 3. `window.parent.jQuery` + `this.getForm()` cross-window → masih belum muncul
+>
+> **Akar masalah:** Ace editor & `.data('editor')` milik parent window, settings.js jalan di iframe. Bridge via `window.parent` seharusnya bekerja di BB (UABB tidak inject toolbar ke Ace editor, mereka hanya conditional show/hide fields). BB core (`fl-builder-node-code-settings.js`) juga tidak inject toolbar ke Ace.
+>
+> **Kemungkinan penyelidikan selanjutnya:**
+> - Cek apakah `$this->add_js()` benar-benar enqueue di builder context
+> - Cek console browser untuk error JS
+> - Coba inject langsung via `wp_enqueue_script` di hook `wp_enqueue_scripts` + `FLBuilderModel::is_builder_active()` (seperti pattern `fl-builder-node-code-settings.php`)
+> - Gunakan MutationObserver untuk detect kapan Ace editor muncul di DOM parent
+> - Coba inject CSS & toolbar via `fl_builder_ui_enqueue_scripts` + polling `setInterval`
+
 ## Summary
 Tambah tombol "+" di atas Ace editor field `custom_layout` (Post Card HTML) yg saat diklik menampilkan daftar shortcode yg bisa dipilih lalu disisipkan ke posisi kursor.
 
