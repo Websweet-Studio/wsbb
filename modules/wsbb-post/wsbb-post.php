@@ -23,6 +23,12 @@ class Wsbb_Post extends FLBuilderModule
     {
         $this->add_css('wsbb-post', $this->url . 'css/frontend.css', array(), WSBB_VERSION);
         $this->add_js('wsbb-post', $this->url . 'js/frontend.js', array('jquery'), WSBB_VERSION, true);
+
+        // Load settings.js in the builder preview (iframe) so
+        // FLBuilder.registerModuleHelper fires on settings form open.
+        if (class_exists('FLBuilderModel') && FLBuilderModel::is_builder_active()) {
+            $this->add_js('wsbb-post-settings', $this->url . 'js/settings.js', array('jquery'), WSBB_VERSION, true);
+        }
     }
 
     /** All public post types for dropdown. */
@@ -583,15 +589,32 @@ FLBuilder::register_module('Wsbb_Post', array(
                                 'sections' => array('elements'),
                             ),
                             'custom' => array(
-                                'sections' => array('custom_html', 'custom_css', 'shortcode_ref'),
+                                'sections' => array('custom_layout_editor', 'shortcode_ref'),
                             ),
                         ),
                     ),
                 ),
             ),
-            'custom_html' => array(
-                'title'  => __('HTML', 'wsbb'),
+            'custom_layout_editor' => array(
+                'title'  => __('Custom Layout Editor', 'wsbb'),
                 'fields' => array(
+                    'layout_content_mode' => array(
+                        'type'    => 'button-group',
+                        'label'   => __('Mode', 'wsbb'),
+                        'default' => 'html',
+                        'options' => array(
+                            'html' => __('HTML', 'wsbb'),
+                            'css'  => __('CSS', 'wsbb'),
+                        ),
+                        'toggle' => array(
+                            'html' => array(
+                                'fields' => array('custom_layout'),
+                            ),
+                            'css' => array(
+                                'fields' => array('custom_css_field'),
+                            ),
+                        ),
+                    ),
                     'custom_layout' => array(
                         'type'    => 'code',
                         'editor'  => 'html',
@@ -620,11 +643,6 @@ FLBuilder::register_module('Wsbb_Post', array(
                         'rows' => '20',
                         'help' => __('HTML for inner content of each post card. Use [wsbb] shortcodes.', 'wsbb'),
                     ),
-                ),
-            ),
-            'custom_css' => array(
-                'title'  => __('CSS', 'wsbb'),
-                'fields' => array(
                     'custom_css_field' => array(
                         'type'    => 'code',
                         'editor'  => 'css',

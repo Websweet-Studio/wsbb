@@ -1,0 +1,8 @@
+- [x] Section `custom_html` dan `custom_css` dihapus dari toggle `layout_content`
+- [x] Section baru `custom_layout_editor` muncul saat Content Layout = "Custom HTML"
+- [x] Field `layout_content_mode` bertipe button-group dgn opsi "HTML" dan "CSS"
+- [x] Saat tab "HTML" aktif, field `custom_layout` (code editor html) tampil
+- [x] Saat tab "CSS" aktif, field `custom_css_field` (code editor css) tampil
+- [x] Section `shortcode_ref` tetap muncul sebagai section terpisah
+- [x] Tidak ada perubahan pada frontend rendering (custom_layout tetap diproses sama)
+- [x] Tidak ada error/notice PHP setelah perubahan
