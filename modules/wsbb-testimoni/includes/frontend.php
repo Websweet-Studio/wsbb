@@ -24,7 +24,7 @@ if (empty($items)) {
                 data-loop="<?php echo esc_attr($settings->carousel_loop); ?>">
 
                 <?php if ($settings->carousel_arrows === 'yes'): ?>
-                    <button class="wsbb-carousel-prev" type="button" aria-label="<?php _e('Previous', 'wsbb'); ?>">&lsaquo;</button>
+                    <button class="wsbb-carousel-prev" type="button" aria-label="<?php esc_attr_e('Previous', 'wsbb'); ?>">&lsaquo;</button>
                 <?php endif; ?>
 
                 <div class="wsbb-testimoni-carousel-track" style="gap: <?php echo $carousel_gap; ?>px;">
@@ -81,7 +81,7 @@ if (empty($items)) {
                 </div><!-- .wsbb-testimoni-carousel-track -->
 
                 <?php if ($settings->carousel_arrows === 'yes'): ?>
-                    <button class="wsbb-carousel-next" type="button" aria-label="<?php _e('Next', 'wsbb'); ?>">&rsaquo;</button>
+                    <button class="wsbb-carousel-next" type="button" aria-label="<?php esc_attr_e('Next', 'wsbb'); ?>">&rsaquo;</button>
                 <?php endif; ?>
 
                 <?php if ($settings->carousel_dots === 'yes'): ?>

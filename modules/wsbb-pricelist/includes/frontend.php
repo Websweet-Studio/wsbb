@@ -1,7 +1,19 @@
 <?php
 $btn_url     = ! empty($settings->btn_link) ? $settings->btn_link : '#';
-$btn_rel     = ! empty($settings->btn_link_nofollow) ? ' rel="nofollow"' : '';
-$btn_new_tab = ! empty($settings->btn_link_target) ? ' target="_blank"' : '';
+
+$btn_rel_parts = array();
+if (! empty($settings->btn_link_target)) {
+    $btn_target_attr = ' target="_blank"';
+    $btn_rel_parts[] = 'noopener';
+    $btn_rel_parts[] = 'noreferrer';
+} else {
+    $btn_target_attr = '';
+}
+if (! empty($settings->btn_link_nofollow)) {
+    $btn_rel_parts[] = 'nofollow';
+}
+$btn_rel_attr = !empty($btn_rel_parts) ? ' rel="' . implode(' ', $btn_rel_parts) . '"' : '';
+$btn_new_tab  = $btn_target_attr . $btn_rel_attr;
 $is_featured = ('yes' === $settings->featured);
 
 $card_style     = ! empty($settings->card_style) ? $settings->card_style : 'standard';
@@ -82,7 +94,7 @@ $is_elevated = ('elevated' === $card_style);
 
         <?php if ( ! $is_elevated && ! empty( $settings->btn_text ) ) : ?>
             <div class="wsbb-pricelist-btn-wrap">
-                <a href="<?php echo esc_url( $btn_url ); ?>" class="<?php echo esc_attr( $btn_class ); ?>"<?php echo $btn_rel . $btn_new_tab; ?>>
+                <a href="<?php echo esc_url( $btn_url ); ?>" class="<?php echo esc_attr( $btn_class ); ?>"<?php echo $btn_new_tab; ?>>
                     <?php echo esc_html( $settings->btn_text ); ?>
                 </a>
             </div>
@@ -92,7 +104,7 @@ $is_elevated = ('elevated' === $card_style);
         </div>
             <?php if ( ! empty( $settings->btn_text ) ) : ?>
             <div class="wsbb-pricelist-btn-wrap">
-                <a href="<?php echo esc_url( $btn_url ); ?>" class="<?php echo esc_attr( $btn_class ); ?>"<?php echo $btn_rel . $btn_new_tab; ?>>
+                <a href="<?php echo esc_url( $btn_url ); ?>" class="<?php echo esc_attr( $btn_class ); ?>"<?php echo $btn_new_tab; ?>>
                     <?php echo esc_html( $settings->btn_text ); ?>
                 </a>
             </div>

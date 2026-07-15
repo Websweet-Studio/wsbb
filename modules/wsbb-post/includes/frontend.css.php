@@ -220,6 +220,6 @@ font-weight: <?php echo $font_weight; ?>;
 
 /* ===== Custom Card CSS ===== */
 <?php if ($is_custom && !empty($settings->custom_css_field)): ?>
-  <?php echo $settings->custom_css_field; ?>
+  <?php echo wp_strip_all_tags( $settings->custom_css_field ); ?>
 
 <?php endif; ?>

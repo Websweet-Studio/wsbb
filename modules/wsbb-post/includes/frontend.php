@@ -147,7 +147,7 @@ $image_size = isset($settings->image_size) ? $settings->image_size : 'medium_lar
             echo '</div>';
             ?>
             <button class="wsbb-load-more-btn" data-page="1" data-total="<?php echo esc_attr($total_pages); ?>">
-              <?php _e('Load More', 'wsbb'); ?>
+              <?php esc_html_e('Load More', 'wsbb'); ?>
             </button>
           <?php elseif (isset($settings->pagination_type) && $settings->pagination_type === 'prev_next') : ?>
             <?php
@@ -181,7 +181,7 @@ $image_size = isset($settings->image_size) ? $settings->image_size : 'medium_lar
     <?php endif; ?>
 
   <?php else : ?>
-    <p class="wsbb-post-empty"><?php _e('No posts found.', 'wsbb'); ?></p>
+    <p class="wsbb-post-empty"><?php esc_html_e('No posts found.', 'wsbb'); ?></p>
   <?php endif; ?>
 </div>
 

@@ -1,9 +1,18 @@
 <?php
 $link = !empty($settings->button_link) ? $settings->button_link : '#';
-$target = isset($settings->button_link_target) && $settings->button_link_target === '_blank' ? ' target="_blank" rel="noopener noreferrer"' : '';
-if (isset($settings->button_link_nofollow) && $settings->button_link_nofollow === 'yes') {
-    $target .= ' rel="nofollow"';
+
+$rel_parts   = array();
+$target_attr = '';
+if (isset($settings->button_link_target) && $settings->button_link_target === '_blank') {
+    $target_attr = ' target="_blank"';
+    $rel_parts[] = 'noopener';
+    $rel_parts[] = 'noreferrer';
 }
+if (isset($settings->button_link_nofollow) && $settings->button_link_nofollow === 'yes') {
+    $rel_parts[] = 'nofollow';
+}
+$rel_attr = !empty($rel_parts) ? ' rel="' . implode(' ', $rel_parts) . '"' : '';
+$target  = $target_attr . $rel_attr;
 
 $icon_html = '';
 if (!empty($settings->button_icon)) {

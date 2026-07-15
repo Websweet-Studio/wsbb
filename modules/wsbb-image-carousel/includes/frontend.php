@@ -6,7 +6,7 @@ $is_marquee   = $slider_mode === 'marquee';
 $is_carousel  = $slider_mode === 'carousel';
 
 if (empty($images)) {
-    echo '<p class="wsbb-image-carousel-empty">' . __('No images selected.', 'wsbb') . '</p>';
+    echo '<p class="wsbb-image-carousel-empty">' . esc_html__('No images selected.', 'wsbb') . '</p>';
     return;
 }
 
@@ -59,7 +59,7 @@ $carousel_step    = isset($settings->carousel_slides) ? intval($settings->carous
             data-loop="<?php echo esc_attr($settings->carousel_loop); ?>">
 
             <?php if ($settings->carousel_arrows === 'yes'): ?>
-                <button class="wsbb-carousel-prev" type="button" aria-label="<?php _e('Previous', 'wsbb'); ?>">&lsaquo;</button>
+                <button class="wsbb-carousel-prev" type="button" aria-label="<?php esc_attr_e('Previous', 'wsbb'); ?>">&lsaquo;</button>
             <?php endif; ?>
 
             <div class="wsbb-ic-track"
@@ -74,7 +74,7 @@ $carousel_step    = isset($settings->carousel_slides) ? intval($settings->carous
             </div>
 
             <?php if ($settings->carousel_arrows === 'yes'): ?>
-                <button class="wsbb-carousel-next" type="button" aria-label="<?php _e('Next', 'wsbb'); ?>">&rsaquo;</button>
+                <button class="wsbb-carousel-next" type="button" aria-label="<?php esc_attr_e('Next', 'wsbb'); ?>">&rsaquo;</button>
             <?php endif; ?>
 
             <?php if ($settings->carousel_dots === 'yes'): ?>
